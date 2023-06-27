@@ -10,8 +10,8 @@
         </el-form-item>
         <el-form-item>
           <el-button type="primary" @click="login">登录</el-button>
-          <a href="#" class="forget-password">忘记密码</a>
-          <a href="#" class="register">注册账号</a>
+          <a href="/forgetPassword" class="forget-password">忘记密码</a>
+          <a href="/reg" class="register">注册账号</a>
         </el-form-item>
       </el-form>
 
@@ -26,7 +26,7 @@ export default {
   data() {
     return {
       user: {
-        username: "", password: "", nickname: "", admin: ""
+        username: "", password: "", nickname: "", question: "", answer: "",email:"", code: "",
       }
 
     }
@@ -38,7 +38,7 @@ export default {
         return;
       }
 
-      this.axios.post("/v1/users/login", this.user).then( (response) => {
+      this.axios.post("http://localhost:8081/v1/users/login", this.user).then( (response) => {
         if (response.data.code == 1000) {
           this.$message.success("登录成功");
           /*控制不同权限用户登录成功后跳转的页面*/
@@ -52,12 +52,12 @@ export default {
             /*第二次拆分过去第一个数组元素值*/
             if (storage[1].split('"}]')[0] === 'ROLE_admin') {
               console.log(1)
-              location.href = "admin.html";
+              location.href = "http://localhost:9090/home";
               break;
             }
             if (storage[1].split('"}]')[0] === 'ROLE_bookadmin') {
               console.log(2)
-              location.href = "bookadmin.html";
+              location.href = "http://localhost:9090/bookadmin";
               break;
             }
             if (storage[1].split('"}]')[0] === 'user') {

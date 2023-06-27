@@ -6,9 +6,21 @@ Vue.use(VueRouter)
 
 const routes = [
   {
-    path: '/',
+    path: '/reg',
+    component: () => import(/* webpackChunkName: "about" */ '../views/LoginReg/Reg.vue')
+  },
+  {
+    path: '/login',
     component: () => import(/* webpackChunkName: "about" */ '../views/LoginReg/Login.vue')
-  }
+  },
+  {
+    path: '/forgetPassword',
+    component: () => import(/* webpackChunkName: "about" */ '../views/LoginReg/ForgetPassword.vue')
+  },
+  {
+    path: '/forgetPasswordEmail',
+    component: () => import(/* webpackChunkName: "about" */ '../views/LoginReg/ForgetPasswordEmail.vue')
+  },
 ]
 
 const router = new VueRouter({

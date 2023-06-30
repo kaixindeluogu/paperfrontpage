@@ -41,15 +41,33 @@ export default {
       this.axios.post("http://localhost:8081/v1/users/login", this.user).then( (response) => {
         if (response.data.code == 1000) {
           this.$message.success("登录成功");
-          /*控制不同权限用户登录成功后跳转的页面*/
-          localStorage.user = JSON.stringify(response.data.data);
-          /*第一次拆分*/
-          let storage = localStorage.user.split('[{"authority":"');
+          let loginResult = response.data.data;
+          localStorage.setItem("id", loginResult.id);
+          localStorage.setItem("username", loginResult.username);
+          localStorage.setItem("jwt", loginResult.token);
+          localStorage.setItem("authority",loginResult.admin[0].authority);
+          console.log(loginResult.admin[0].authority);
+          console.log(localStorage.getItem("jwt"));
+          console.log(localStorage.getItem("authority"))
+          if (localStorage.getItem("authority") == 'user') {
+            this.$router.push('/')
+          }else if (localStorage.getItem("authority") == 'admin'){
+            window.location.href='http://localhost:9090/home'
+          }else if (localStorage.getItem("authority") == 'bookadmin'){
+            window.location.href='http://localhost:9090/bookadmin'
+          }
 
-          for (let i = 0; i < storage.length; i++) {
+
+
+          /*控制不同权限用户登录成功后跳转的页面*/
+          //localStorage.user = JSON.stringify(response.data.data);
+          /*第一次拆分*/
+          //let storage = localStorage.user.split('[{"authority":"');
+
+          /*for (let i = 0; i < storage.length; i++) {
             console.log(storage[i])
             console.log(storage[1].split('"}]'))
-            /*第二次拆分过去第一个数组元素值*/
+            /!*第二次拆分过去第一个数组元素值*!/
             if (storage[1].split('"}]')[0] === 'ROLE_admin') {
               console.log(1)
               location.href = "http://localhost:9090/home";
@@ -65,7 +83,7 @@ export default {
               location.href = "/";
               break;
             }
-          }
+          }*/
 
         } else {
           this.$message.error(response.data.misDescription);

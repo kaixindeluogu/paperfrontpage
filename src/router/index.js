@@ -21,6 +21,10 @@ const routes = [
     path: '/forgetPasswordEmail',
     component: () => import(/* webpackChunkName: "about" */ '../views/LoginReg/ForgetPasswordEmail.vue')
   },
+  {
+    path: '/remind',
+    component: () => import(/* webpackChunkName: "about" */ '../views/LoginReg/Remind.vue')
+  },
 ]
 
 const router = new VueRouter({

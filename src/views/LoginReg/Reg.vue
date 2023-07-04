@@ -48,6 +48,9 @@ export default {
 
   data() {
     return {
+
+
+
       user: {
         username: "", password: "", nickname: "", admin: ""
       }

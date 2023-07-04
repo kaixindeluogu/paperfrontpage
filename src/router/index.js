@@ -22,13 +22,15 @@ const routes = [
     component: () => import(/* webpackChunkName: "about" */ '../views/LoginReg/ForgetPasswordEmail.vue')
   },
   {
-    path: '/remind',
-    component: () => import(/* webpackChunkName: "about" */ '../views/LoginReg/Remind.vue')
-  },
-  {
     path: '/headers',
     component: () => import('../components/Headers.vue')
+  }, {
+    path: '/BookDeatils',
+    component: () => import(/* webpackChunkName: "about" */ '../views/BookDeatils/BookDeatils.vue')
   },
+
+
+
 
 
 ]

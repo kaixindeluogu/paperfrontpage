@@ -49,13 +49,8 @@ export default {
           console.log(loginResult.admin[0].authority);
           console.log(localStorage.getItem("jwt"));
           console.log(localStorage.getItem("authority"))
-          if (localStorage.getItem("authority") == 'user') {
-            this.$router.push('/')
-          }else if (localStorage.getItem("authority") == 'admin'){
-            window.location.href='http://localhost:9090/home'
-          }else if (localStorage.getItem("authority") == 'bookadmin'){
-            window.location.href='http://localhost:9090/bookadmin'
-          }
+          this.$router.push('/')
+
 
 
 

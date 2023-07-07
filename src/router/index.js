@@ -22,8 +22,8 @@ const routes = [
     component: () => import(/* webpackChunkName: "about" */ '../views/LoginReg/ForgetPasswordEmail.vue')
   },
   {
-    path: '/headers',
-    component: () => import('../components/Headers.vue')
+    path: '/Home',
+    component: () => import('../views/HomeView.vue')
    },
   {
     path: '/BookDeatils',
@@ -31,7 +31,7 @@ const routes = [
   },
    {
     path: '/',
-    component: () => import(/* webpackChunkName: "about" */ '../App')
+    component: () => import(/* webpackChunkName: "about" */ '../views/HomeView.vue')
   },
 
 

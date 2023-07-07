@@ -24,10 +24,11 @@ const routes = [
   {
     path: '/headers',
     component: () => import('../components/Headers.vue')
-   }, //{
-  //   path: '/BookDeatils',
-  //   component: () => import(/* webpackChunkName: "about" */ '../views/BookDeatils/BookDeatils.vue')
-  // },
+   },
+  {
+    path: '/BookDeatils',
+    component: () => import(/* webpackChunkName: "about" */ '../components/BookDeatils.vue')
+  },
    {
     path: '/',
     component: () => import(/* webpackChunkName: "about" */ '../App')

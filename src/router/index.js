@@ -27,7 +27,7 @@ const routes = [
    },
   {
     path: '/BookDetails',
-    component: () => import(/* webpackChunkName: "about" */ '../components/BookDetails.vue')
+    component: () => import(/* webpackChunkName: "about" */ '../components/BookDeatils.vue')
   },
    {
     path: '/',

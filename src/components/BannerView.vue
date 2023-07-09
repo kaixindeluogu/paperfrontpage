@@ -13,8 +13,6 @@ export default {
     return {
       bannerArr:[]
     }
-
-
   },
   methods:{
     //展示轮播图
@@ -22,7 +20,7 @@ export default {
       let url='http://localhost:8081/v1/front/banner';
       console.log('url='+url)
       this.axios
-          .create({'headers': {'Authorization': localStorage.getItem('localJwt')}})
+          .create({'headers': {'Authorization': localStorage.getItem('jwt')}})
           .get(url).then((response)=>{
         this.bannerArr=response.data.data;
       })

@@ -20,15 +20,12 @@
           </el-col>
           <!--    bottomright-->
           <el-col :span="10" style="padding-left: 100px;padding-top: 40px">
-            <table></table>
-            <img src="../assets/logo.png" height="10px">
-            <el-row>
-              <el-link v-for="item in adver"  :key="item.id" :href="item.url">{{ item.id}}-{{item.name }}
-              </el-link>
+<!--            <img src="../assets/logo.png" height="20px">-->
+            <el-row>广告链接
+              <el-link v-for="item in adver"  :key="item.id" :href="item.url" >&nbsp{{item.name}}&nbsp</el-link>
             </el-row>
           </el-col>
         </el-row>
-
       </el-footer>
     </el-container>
   </div>
@@ -44,7 +41,7 @@ export default {
     return {
       adver: [
         // {id:"" ,name:"",url:""},
-      ],
+        ],
       keywords: ['七猫', '起点', '中国国家图书馆', '中国文化传媒网', '中国图书馆学会', '国家图书馆出版社', '中国古籍保护协会'], // 关键词数组
 
     }
@@ -97,8 +94,11 @@ export default {
       }
       });
     },
+  },mounted() {
+    this.getAdver();
   }
 }
+
 </script>
 
 <style scoped>

@@ -13,10 +13,11 @@
                        mode="horizontal" menu-trigger="click" active-text-color="purple">
                 <el-menu-item index="0" style="color: black" @click="home">首页</el-menu-item>
                 <!--                分类-->
-                <el-submenu  index="1" style="color: black">
+                <el-submenu index="1" style="color: black">
                   <template slot="title">分类</template>
-                  <el-menu-item  v-for="item in tableForm"
-                                 :index="item.id" :value="item.id" @click="sortPage(item.url)" style="background-color: #a2ead9;color: black;">{{ item.name }}
+                  <el-menu-item v-for="item in tableForm"
+                                :index="item.id" :value="item.id" @click="sortPage(item.url)"
+                                style="background-color: rgba(248,241,241,0.99);color: black;">{{ item.name }}
                   </el-menu-item>
                 </el-submenu>
 
@@ -45,10 +46,16 @@
                 <el-button style="background-color: mediumpurple" @click="login">登录</el-button>
               </el-popover>
               <!--              登陆成功切换页面-->
+
               <div class="login-user" v-else>
-                <span class="welcome">欢迎回来，<b>{{ currentUserName }}</b>&nbsp!&nbsp&nbsp&nbsp</span>
                 <el-dropdown @command="handleCommand">
-                  <el-avatar size="medium" :src="currentUserAvatar"></el-avatar>
+                <span class="welcome">欢迎回来，<b>{{ currentUserName }}</b>&nbsp!&nbsp&nbsp&nbsp</span>
+                  <template >
+                    <el-avatar v-if="currentUserAvatar" size="medium" :src="currentUserAvatar"></el-avatar>
+
+                    <el-avatar v-else src="https://cube.elemecdn.com/0/88/03b0d39583f48206768a7534e55bcpng.png"></el-avatar>
+                  </template>
+
                   <el-dropdown-menu slot="dropdown">
                     <el-dropdown-item icon="el-icon-plus" command="openEditInfoDialog">修改资料</el-dropdown-item>
                     <el-dropdown-item icon="el-icon-plus" command="openEditAvatarDialog">修改头像</el-dropdown-item>
@@ -73,8 +80,8 @@ export default {
   data() {
     return {
       tableForm: [
-        {id:1,name:"名著",url:"https://www.baidu.com"},
-        {id:2,name:"小说",url:"https://www.baidu.com"}
+        {id: 1, name: "名著", url: "https://www.baidu.com"},
+        {id: 2, name: "小说", url: "https://www.baidu.com"}
       ],
       currentUserName: '',
       currentUserAvatar: '',
@@ -83,17 +90,15 @@ export default {
 
   methods: {
     //获取分类数据并实现点击跳转
-    sortPage(url){
-    //   axios.get('http://localhost:8081/v1/adver/' + item.id).then(response => {
-    //     this.tableForm = response.data;
-    //   })
-    //       .catch(error => {
-    //         console.error(error);
-    //       });
-    //
-    // },
-      window.location.href=url;
-    },
+    sortPage(url) {
+        axios.get('http://localhost:8081/v1/adver/' + item.id).then(response => {
+          this.tableForm = response.data;
+        })
+            .catch(error => {
+              console.error(error);
+            });
+      window.location.href = url;
+      },
     handleCommand(command) {
       if (command == 'openEditInfoDialog') {
         this.openEditInfoDialog();
@@ -114,17 +119,36 @@ export default {
     openEditPasswordDialog() {
       console.log('准备弹出修改当前用户密码的对话框');
     },
-    openLogoutConfirm(){
+    openLogoutConfirm() {
       //todo跳出弹框,并确认是否登出
+          this.$confirm('您将退出个人信息登录, 是否继续?', '提示', {
+            confirmButtonText: '确定',
+            cancelButtonText: '取消',
+            type: 'warning'
+          }).then(() => {
+            localStorage.removeItem("jwt")
+            this.$message({
+              type: 'success',
+              message: '删除成功!'
+            });
+            this.$router.push('/home')
+          }).catch(() => {
+            this.$message({
+              type: 'info',
+              message: '取消退出登录'
+            });
+          });
+
     },
     /**
      * 登录判断
      */
     userLogin() {
-        if (localStorage.getItem("jwt")!=null) {
-          return false;
-        }
-        return true;
+      if (localStorage.getItem("jwt") != null) {
+        console.log("jwt")
+        return false;
+      }
+      return true;
     },
     open1() {
       this.$message({
@@ -152,13 +176,13 @@ export default {
     },
     register() {
       const currentPath = this.$router.currentRoute.path;
-      if (currentPath !== '/register') {
+      if (currentPath !== '/reg') {
         this.$router.replace({path: '/reg'});
       }
     },
     home() {
       const currentPath = this.$router.currentRoute.path;
-      if (currentPath !== '/home') {
+      if (currentPath !== '/Home') {
         this.$router.replace({path: '/Home  '});
       }
     },
@@ -170,24 +194,25 @@ export default {
   },
   mounted() {
     this.loadCurrentUserInfo();
-
+    this.userLogin();
   },
 }
 </script>
 
 <style scoped>
 /*登陆成功后头像显示设置*/
- .login-user {
+.login-user {
   float: right;
   margin-top: 40px;
-   display: flex;
+  display: flex;
 }
- .login-user .welcome {
-  line-height: 36px;
+
+.login-user .welcome {
+
+  line-height: 60px;
   color: black;
 
 }
-
 
 
 #el-header {

@@ -192,16 +192,46 @@
       </div>
       <!--会员课程列表结束-->
     </el-main>
+
+
+    <div style="text-align: right;position: fixed;position: fixed;
+						  right: 20px;
+						  bottom: 20px;
+						  z-index: 999;
+					">
+      <button v-if="true" @click="handleClick()" class="el-icon-upload2"
+              style="font-size: 40px; color: #FFC0CB;background-color: transparent; border: 0;">
+        <br>
+        <a @click.prevent="jumpHtml()" class="el-icon-chat-dot-round"
+           style="background-color: transparent; margin: 5px;"></a>
+        <br>
+        <a @click.prevent="jumpMessage()" class="el-icon-message-solid"
+           style="background-color: transparent; margin: 5px;"></a>
+      </button>
+
+    </div>
   </div>
 </template>
 
 <script>
 export default {
-  name: "Body"
+  name: "Body",
+  methods: {
+    handleClick() {
+      window.scrollTo(0, 0);
+    },
+    jumpHtml() {
+      window.open('http://baidu.com', '_blank');
+    },
+    jumpMessage() {
+      window.open('http://baidu.com', '_blank');
+    }
+  }
 }
 </script>
 
 <style>
+
 
 .popup-container {
   position: absolute;

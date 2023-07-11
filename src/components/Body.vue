@@ -8,76 +8,52 @@
       <el-row :gutter="20">
         <el-col :span="15" style="border: 1px solid white">
           <div class="main_div_button">
+<!--            轮播图上方分类-->
             <div class="button-wrapper">
               <div class="button"><i class="el-icon-paperclip" style="font-size: 20px;color: pink"></i>
                 <div><a href="#">IT</a></div>
               </div>
-              <div class="button"><a href="#">
+              <div class="button"  v-for="category in categories">
+                <a href="#">
                 <!-- 111显示点赞量 各个分类 -->
                 <button>111</button>
-                <div>健身运动</div>
-              </a></div>
-              <div class="button"><a href="#">
-                <button>111</button>
-                <div>绘画设计</div>
-              </a></div>
-              <div class="button"><a href="#">
-                <button>111</button>
-                <div>音乐</div>
-              </a></div>
-              <div class="button"><a href="#">
-                <button>111</button>
-                <div>舞蹈</div>
-              </a></div>
-              <div class="button"><a href="#">
-                <button>111</button>
-                <div>时尚</div>
-              </a></div>
-              <div class="button"><a href="#">
-                <button>111</button>
-                <div>科技</div>
-              </a></div>
-              <div class="button"><a href="#">
-                <button>111</button>
-                <div>游戏</div>
-              </a></div>
-              <div class="button"><a href="#">
-                <button>111</button>
-                <div>美食</div>
-              </a></div>
-              <div class="button"><a href="#">
-                <button>111</button>
-                <div>知识</div>
+                <div>{{category.name}}</div>
               </a></div>
             </div>
+
           </div>
         </el-col>
         <el-col :span="6">
           <div class="grid-content bg-purple" style="font-size: 24px">
-            <i class="el-icon-paperclip" style="font-size: 24px;color: pink"></i><a href="#"
-                                                                                    style="text-decoration: none;color: black">广场</a>
+            <i class="el-icon-paperclip" style="font-size: 24px;color: pink"></i>
+            <a href="#" style="text-decoration: none;color: black">广场</a>
             &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-            <i class="el-icon-paperclip" style="font-size: 24px;color: pink"></i><a href="#"
-                                                                                    style="text-decoration: none;color: black">小黑屋</a>
+            <i class="el-icon-paperclip" style="font-size: 24px;color: pink"></i>
+            <a href="#" style="text-decoration: none;color: black">小黑屋</a>
           </div>
         </el-col>
+
         <el-col :span="1">
           <div class="grid-content bg-purple">logo</div>
         </el-col>
       </el-row>
+
       <el-row :gutter="10">
+<!--        轮播图-->
+
         <el-col :span="14" style="margin-top: 20px;text-align: center;">
-          <div>
-            <div>
-              <el-carousel>
-                <el-carousel-item v-for="item in 4">
-                  <img src="https://cdn.tmooc.cn/bsfile//imgad///2d312700f1b14fbfa123dfa0ae987bdf.jpg" width="900px"
-                       height="100%"/>
-                </el-carousel-item>
-              </el-carousel>
-            </div>
-          </div>
+         <BannerView />
+<!--            <div>-->
+<!--              <el-carousel>-->
+<!--                <el-carousel-item v-for="item in 4">-->
+<!--                  <img src="https://cdn.tmooc.cn/bsfile//imgad///2d312700f1b14fbfa123dfa0ae987bdf.jpg" width="900px"-->
+<!--                       height="100%"/>-->
+<!--                </el-carousel-item>-->
+<!--              </el-carousel>-->
+<!--            </div>-->
+
         </el-col>
+
         <el-col :span="10" style="margin-top: 20px;text-align: center;background-color: white">
           <el-col v-for="r in 3" span="8">
             <div class="image-with-text">
@@ -138,9 +114,12 @@
       <el-row style="background-color: white">
         <el-col span="3">
 
-          <p style="font-size: 28px;line-height: 65px;margin: 0"><i class="el-icon-video-camera">精品课程</i></p>
+          <p style="font-size: 28px;line-height: 65px;margin: 0">
+            <i class="el-icon-video-camera">精品课程</i>
+          </p>
         </el-col>
       </el-row>
+      <BookDetails />
       <!--精品课程列表开始-->
       <el-row gutter="20">
         <el-col v-for="r in 4" span="6">
@@ -179,7 +158,7 @@
             <el-row gutter="20">
               <el-col span="4">
               </el-col>
-              <el-col span="12" style="color: red;font-size: 14px">￥1.00(会员免费)</el-col>
+              <el-col span="12" style=" color: red;font-size: 14px">￥1.00(会员免费)</el-col>
               <el-col span="8">
                 <span style="float: right;font-size: 12px;color: #ccc;position: absolute;right: 2px">已有xxx人预约</span>
               </el-col>
@@ -196,8 +175,33 @@
 </template>
 
 <script>
+
+import BannerView from "@/components/BannerView.vue";
+import BookDetails from "@/components/BookDetails";
 export default {
-  name: "Body"
+  name: "Body",
+  components: {
+    BookDetails,
+    BannerView,
+  },
+  data(){
+    return{
+      categories:[
+          {name:"绘画设计"},
+          {name:"绘画设计"},
+          {name:"绘画设计"},
+          {name:"绘画设计"},
+          {name:"绘画设计"},
+          {name:"绘画设计"},
+          {name:"绘画设计"},
+      ],
+
+  }
+
+  },
+  methods:{
+
+  }
 }
 </script>
 
@@ -336,6 +340,7 @@ export default {
   display: flex;
   justify-content: center;
   align-items: center;
+
 }
 
 .button {

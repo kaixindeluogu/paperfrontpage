@@ -9,15 +9,17 @@
               <img src="../assets/WechatIMG21.png" width="150" height="110" @click="home">
             </el-col>
             <el-col span="10">
-              <el-menu class="el-menu"
-                       mode="horizontal" menu-trigger="click" active-text-color="purple">
+              <el-menu class="el-menu" mode="horizontal" menu-trigger="hover" active-text-color="purple"
+                       style="background-color: rgba(255, 255, 255, 0.4);">
                 <el-menu-item index="0" style="color: black" @click="home">首页</el-menu-item>
                 <!--                分类-->
-                <el-submenu index="1" style="color: black">
+                <el-submenu  index="1" style="color: black;">
                   <template slot="title">分类</template>
+                  <!-- @click="sortPage(item.url)" -->
                   <el-menu-item v-for="item in tableForm"
-                                :index="item.id" :value="item.id" @click="sortPage(item.url)"
-                                style="background-color: rgba(248,241,241,0.99);color: black;">{{ item.name }}
+                                :index="item.id" :value="item.id"
+                                style=" background-color: #ffffff; color: #333; text-align: center;">
+                    {{ item.name }}
                   </el-menu-item>
                 </el-submenu>
 
@@ -27,7 +29,8 @@
               </el-menu>
             </el-col>
             <el-col span="4">
-              <el-input style="margin-top: 40px" placeholder="百日孤独">
+              <el-input
+                       style="margin-top: 40px;margin-left: 70px" placeholder="百日孤独">
                 <el-button slot="append" icon="el-icon-search">搜索</el-button>
               </el-input>
             </el-col>
@@ -48,20 +51,22 @@
               <!--              登陆成功切换页面-->
 
               <div class="login-user" v-else>
-                <el-dropdown @command="handleCommand">
-                <span class="welcome">欢迎回来，<b>{{ currentUserName }}</b>&nbsp!&nbsp&nbsp&nbsp</span>
-                  <template >
+
+                  <span class="welcome"><b>{{ currentUserName }}</b>&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp</span>
+                    <el-dropdown @command="handleCommand">
+                      <template>
                     <el-avatar v-if="currentUserAvatar" size="medium" :src="currentUserAvatar"></el-avatar>
 
-                    <el-avatar v-else src="https://cube.elemecdn.com/0/88/03b0d39583f48206768a7534e55bcpng.png"></el-avatar>
-                  </template>
-
+                    <el-avatar v-else
+                               src="https://cube.elemecdn.com/0/88/03b0d39583f48206768a7534e55bcpng.png"></el-avatar>
+                      </template>
                   <el-dropdown-menu slot="dropdown">
                     <el-dropdown-item icon="el-icon-plus" command="openEditInfoDialog">修改资料</el-dropdown-item>
                     <el-dropdown-item icon="el-icon-plus" command="openEditAvatarDialog">修改头像</el-dropdown-item>
                     <el-dropdown-item icon="el-icon-plus" command="openEditPasswordDialog">修改密码</el-dropdown-item>
                     <el-dropdown-item icon="el-icon-plus" divided command="openLogoutConfirm">退出登录</el-dropdown-item>
                   </el-dropdown-menu>
+
                 </el-dropdown>
               </div>
             </el-col>
@@ -80,8 +85,8 @@ export default {
   data() {
     return {
       tableForm: [
-        {id: 1, name: "名著", url: "https://www.baidu.com"},
-        {id: 2, name: "小说", url: "https://www.baidu.com"}
+        // {id: 1, name: "名著", url: "https://www.baidu.com"},
+        // {id: 2, name: "小说", url: "https://www.baidu.com"}
       ],
       currentUserName: '',
       currentUserAvatar: '',
@@ -90,15 +95,17 @@ export default {
 
   methods: {
     //获取分类数据并实现点击跳转
-    sortPage(url) {
-        axios.get('http://localhost:8081/v1/adver/' + item.id).then(response => {
-          this.tableForm = response.data;
-        })
-            .catch(error => {
-              console.error(error);
-            });
-      window.location.href = url;
-      },
+    sortPage() {
+      console.log(+localStorage.getItem('jwt'));
+      this.axios
+          .create({'headers': {'Authorization': localStorage.getItem('jwt')}})
+          .get('http://localhost:8081/v1/adver/categoryList').then(response => {
+        this.tableForm = response.data.data;
+      })
+          .catch(error => {
+            console.error(error);
+          });
+    },
     handleCommand(command) {
       if (command == 'openEditInfoDialog') {
         this.openEditInfoDialog();
@@ -121,23 +128,23 @@ export default {
     },
     openLogoutConfirm() {
       //todo跳出弹框,并确认是否登出
-          this.$confirm('您将退出个人信息登录, 是否继续?', '提示', {
-            confirmButtonText: '确定',
-            cancelButtonText: '取消',
-            type: 'warning'
-          }).then(() => {
-            localStorage.removeItem("jwt")
-            this.$message({
-              type: 'success',
-              message: '删除成功!'
-            });
-            this.$router.push('/home')
-          }).catch(() => {
-            this.$message({
-              type: 'info',
-              message: '取消退出登录'
-            });
-          });
+      this.$confirm('您将退出个人信息登录, 是否继续?', '提示', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        type: 'warning'
+      }).then(() => {
+        localStorage.removeItem("jwt")
+        this.$message({
+          type: 'success',
+          message: '删除成功!'
+        });
+        this.$router.push('/home')
+      }).catch(() => {
+        this.$message({
+          type: 'info',
+          message: '取消退出登录'
+        });
+      });
 
     },
     /**
@@ -195,6 +202,7 @@ export default {
   mounted() {
     this.loadCurrentUserInfo();
     this.userLogin();
+    this.sortPage();
   },
 }
 </script>
@@ -203,13 +211,13 @@ export default {
 /*登陆成功后头像显示设置*/
 .login-user {
   float: right;
-  margin-top: 40px;
+  margin-top: 30px;
   display: flex;
 }
 
 .login-user .welcome {
 
-  line-height: 60px;
+  line-height: 40px;
   color: black;
 
 }
@@ -224,6 +232,9 @@ export default {
   top: 0;
   left: 0;
   width: 100%;
+  background-image: url("../assets/img.png"); /* 替换为你的背景图片路径 */
+  background-size: cover;
+  background-repeat: no-repeat;
   background-color: #fff;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
   z-index: 999;

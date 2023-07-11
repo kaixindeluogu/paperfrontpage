@@ -25,11 +25,11 @@
         </el-col>
         <el-col :span="6">
           <div class="grid-content bg-purple" style="font-size: 24px">
-            <i class="el-icon-paperclip" style="font-size: 24px;color: pink"></i>
-            <a href="#" style="text-decoration: none;color: black">广场</a>
+            <i class="el-icon-paperclip" style="font-size: 24px;color: pink"></i><a href="#"
+                                                                                    style="text-decoration: none;color: black">广场</a>
             &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-            <i class="el-icon-paperclip" style="font-size: 24px;color: pink"></i>
-            <a href="#" style="text-decoration: none;color: black">小黑屋</a>
+            <i class="el-icon-paperclip" style="font-size: 24px;color: pink"></i><a href="#"
+                                                                                    style="text-decoration: none;color: black">小黑屋</a>
           </div>
         </el-col>
 
@@ -171,6 +171,24 @@
       </div>
       <!--会员课程列表结束-->
     </el-main>
+
+
+    <div style="text-align: right;position: fixed;position: fixed;
+						  right: 20px;
+						  bottom: 20px;
+						  z-index: 999;
+					">
+      <button v-if="true" @click="handleClick()" class="el-icon-upload2"
+              style="font-size: 40px; color: #FFC0CB;background-color: transparent; border: 0;">
+        <br>
+        <a @click.prevent="jumpHtml()" class="el-icon-chat-dot-round"
+           style="background-color: transparent; margin: 5px;"></a>
+        <br>
+        <a @click.prevent="jumpMessage()" class="el-icon-message-solid"
+           style="background-color: transparent; margin: 5px;"></a>
+      </button>
+
+    </div>
   </div>
 </template>
 
@@ -199,13 +217,22 @@ export default {
   }
 
   },
-  methods:{
-
+  methods: {
+    handleClick() {
+      window.scrollTo(0, 0);
+    },
+    jumpHtml() {
+      window.open('http://baidu.com', '_blank');
+    },
+    jumpMessage() {
+      window.open('http://baidu.com', '_blank');
+    }
   }
 }
 </script>
 
 <style>
+
 
 .popup-container {
   position: absolute;
@@ -340,7 +367,6 @@ export default {
   display: flex;
   justify-content: center;
   align-items: center;
-
 }
 
 .button {

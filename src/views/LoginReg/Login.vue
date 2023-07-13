@@ -1,4 +1,5 @@
 <template>
+<!--  登陆页面-->
   <div class="login-page">
     <div class="login-box">
       <el-form ref="user" :model="user" label-width="80px" style="width: 400px;margin: 50px 10px 50px; ">
@@ -9,7 +10,7 @@
           <el-input type="password" v-model="user.password"></el-input>
         </el-form-item>
         <el-form-item>
-          <el-button type="primary" @click="login">登录</el-button>
+          <el-button type="primary" @click="login">用户登录</el-button>
           <a href="/forgetPassword" class="forget-password">忘记密码</a>
           <a href="/reg" class="register">注册账号</a>
         </el-form-item>
@@ -32,6 +33,9 @@ export default {
     }
   },
   methods: {
+    /**
+     * 登录请求后端方法
+     */
     login() {
       if (this.user.username.length == 0 || this.user.password.length == 0) {
         this.$message.error("选项不能为空");
@@ -41,6 +45,7 @@ export default {
       this.axios.post("http://localhost:8081/v1/users/login", this.user).then( (response) => {
         if (response.data.code == 1000) {
           this.$message.success("登录成功");
+          //获取登录信息缓存到浏览器中
           let loginResult = response.data.data;
           localStorage.setItem("id", loginResult.id);
           localStorage.setItem("username", loginResult.username);
@@ -118,5 +123,27 @@ export default {
 .forget-password,
 .register {
   margin-left: 20px;
+}
+
+.el-form-item__label{
+  color: skyblue;
+}
+
+.login-box input[type="text"],
+.login-box input[type="password"] {
+  width: 100%;
+  padding: 10px;
+  border-radius: 5px;
+  border: none;
+  background-color: rgba(255, 255, 255, 0.2);
+  color: #fff;
+  margin-bottom: 10px;
+}
+
+/* 修改忘记密码和注册链接的样式 */
+.login-box .forget-password,
+.login-box .register {
+  color: #fff;
+  text-decoration: none;
 }
 </style>

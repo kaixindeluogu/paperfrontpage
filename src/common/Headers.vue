@@ -4,13 +4,13 @@
     <el-container>
       <el-header id="el-header" height="80px">
         <div class="head-div">
-          <el-row gutter="30">
+          <el-row gutter="24">
             <el-col span="4" style="margin-left: 40px">
               <img src="../assets/WechatIMG21.png" width="150" height="110" @click="home">
             </el-col>
             <el-col span="10">
               <el-menu class="el-menu" mode="horizontal" menu-trigger="hover" active-text-color="purple"
-                       style="background-color: rgba(255, 255, 255, 0.4);">
+                       style="background-color: rgba(255, 255, 255, 0.3);">
                 <el-menu-item index="0" style="color: black" @click="home">首页</el-menu-item>
                 <!--                分类-->
                 <el-submenu  index="1" style="color: black;">
@@ -30,11 +30,11 @@
             </el-col>
             <el-col span="4">
               <el-input
-                       style="margin-top: 40px;margin-left: 70px" placeholder="百日孤独">
-                <el-button slot="append" icon="el-icon-search">搜索</el-button>
+                       style="margin-top: 40px;margin-left: 70px;border-radius: 10px; width: 200px;" placeholder="百日孤独">
+                <el-button slot="append" icon="el-icon-search" style="color:cornflowerblue;">搜索</el-button>
               </el-input>
             </el-col>
-            <el-col span="5">
+            <el-col span="4">
               <!--              初始页面登录框-->
               <el-popover v-if="userLogin()"
                           placement="top-start"
@@ -50,7 +50,7 @@
               </el-popover>
               <!--              登陆成功切换页面-->
 
-              <div class="login-user" v-else>
+              <div class="login-user1" v-else>
 
                   <span class="welcome"><b>{{ currentUserName }}</b>&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp</span>
                     <el-dropdown @command="handleCommand">
@@ -58,7 +58,8 @@
                     <el-avatar v-if="currentUserAvatar" size="medium" :src="currentUserAvatar"></el-avatar>
 
                     <el-avatar v-else
-                               src="https://cube.elemecdn.com/0/88/03b0d39583f48206768a7534e55bcpng.png"></el-avatar>
+                               src="https://cube.elemecdn.com/0/88/03b0d39583f48206768a7534e55bcpng.png"
+                    style="width: 50px;height: 50px;"></el-avatar>
                       </template>
                   <el-dropdown-menu slot="dropdown">
 
@@ -139,7 +140,7 @@ export default {
         localStorage.removeItem("jwt")
         this.$message({
           type: 'success',
-          message: '删除成功!'
+          message: '已退出登录!'
         });
         this.$router.push('/home')
       }).catch(() => {
@@ -212,14 +213,14 @@ export default {
 
 <style scoped>
 /*登陆成功后头像显示设置*/
-.login-user {
+.login-user1 {
   float: right;
   margin-top: 30px;
   display: flex;
 }
 
-.login-user .welcome {
-
+.login-user1 .welcome {
+  font-size: 19px;
   line-height: 40px;
   color: black;
 

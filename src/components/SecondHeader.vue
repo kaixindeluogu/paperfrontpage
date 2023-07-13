@@ -3,9 +3,9 @@
     <div style="width: 100%;height: 40px;position: absolute;backdrop-filter: blur(90px); line-height: 40px">
       <el-row :gutter="20">
         <el-col :span="8" :offset="2" style="line-height: 40px">
-          <el-list :direction="'horizontal'">
+          <el-list :direction="'horizontal'" >
             <el-list-item class="custom-list-item">
-              <a class="el-icon-s-custom" @click="open3">关于我们</a>
+              <a class="el-icon-s-custom" >纸片阅读</a>
             </el-list-item>
             &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
             <el-list-item class="custom-list-item"><a href="/">首页</a></el-list-item>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
@@ -31,6 +31,29 @@
             <el-list-item class="custom-list-item"><a href="#" @click="login">登录</a></el-list-item>
             <el-divider direction="vertical"></el-divider>
             <el-list-item class="custom-list-item"><a href="#" @click="register">注册</a></el-list-item>
+          </div>
+          <div class="login-user" v-else>
+
+            <span class="welcome"><b>{{ currentUserName }}</b>&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp</span>
+            <el-dropdown @command="handleCommand">
+              <template>
+                <el-avatar v-if="currentUserAvatar" size="medium" :src="currentUserAvatar"></el-avatar>
+
+                <el-avatar v-else
+                           src="https://cube.elemecdn.com/0/88/03b0d39583f48206768a7534e55bcpng.png"
+                style="width: 100%;height: 30px"></el-avatar>
+              </template>
+              <el-dropdown-menu slot="dropdown">
+
+                <el-dropdown-item icon="el-icon-user" command="openPersonalDialog" style="text-align: center">个人中心</el-dropdown-item>
+                <div style="height: 1px;background-color: #999999;margin: 1px 10px; /* 调整横线的位置 */"></div>
+                <el-dropdown-item icon="el-icon-plus" command="openEditInfoDialog">修改资料</el-dropdown-item>
+                <el-dropdown-item icon="el-icon-plus" command="openEditAvatarDialog">修改头像</el-dropdown-item>
+                <el-dropdown-item icon="el-icon-plus" command="openEditPasswordDialog">修改密码</el-dropdown-item>
+                <el-dropdown-item icon="el-icon-close" divided command="openLogoutConfirm">退出登录</el-dropdown-item>
+              </el-dropdown-menu>
+
+            </el-dropdown>
           </div>
         </el-col>
       </el-row>
@@ -116,7 +139,7 @@ export default {
         localStorage.removeItem("jwt")
         this.$message({
           type: 'success',
-          message: '删除成功!'
+          message: '已退出登录!'
         });
         this.$router.push('/home')
       }).catch(() => {
@@ -182,13 +205,21 @@ export default {
 };
 </script>
 <style>
-.custom-form-item label {
+.login-user {
+  float: right;
+  margin-top: 5px;
+  margin-right: 40px;
+  display: flex;
+}
+.custom-list-item a {
+
   font-size: 16px;
-  color: #409EFF;
+  color: black;
 }
 
 .fixed-header {
-  background-color: rgba(255,255,255,0.1);
+  background-color: rgba(255,255,255,0.5);
+
   position: fixed;
   top: 0;
   left: 0;

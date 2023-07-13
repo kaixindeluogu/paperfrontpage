@@ -36,14 +36,15 @@
 
           <el-menu mode="horizontal" default-active="0" active-text-color="orange">
             <el-menu-item index="0">IT</el-menu-item>
-            <el-menu-item index="1">健身运动</el-menu-item>
-            <el-menu-item index="2">音乐</el-menu-item>
-            <el-menu-item index="3">游戏</el-menu-item>
-            <el-menu-item index="4">这是后期根据用户购买的课程</el-menu-item>
+            <el-menu-item index="1">文艺</el-menu-item>
+            <el-menu-item index="2">科幻</el-menu-item>
+            <el-menu-item index="3">网文小说</el-menu-item>
+            <el-menu-item index="4">教育读书</el-menu-item>
           </el-menu>
           <!--我的课程导航结束-->
         </el-col>
-      </el-row> <BookDetails />
+      </el-row>
+      <BookDetails />
       <el-row gutter="20">
         <el-col v-for="r in 4" span="6">
           <el-card style="margin: 10px 0">

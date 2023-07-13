@@ -7,12 +7,12 @@
           <div class="book-details">
             <div class="book-cover">
               <div class="book-cover-inner">
-                <img :src="item.cover" @click="inBookDetails">
+                <img :src="item.cover" @click="inBookDetails(item.id)">
               </div>
             </div>
             <div class="book-info">
               <div class="book-description-top">
-                <p class="book-name"  @click="inBookDetails">&nbsp{{item.name}}</p>
+                <p class="book-name"  @click="inBookDetails(item.id)">&nbsp{{item.name}}</p>
                 <p class="book-author">{{item.author}}
                 <i >{{item.publishTime}}出版</i></p>
               </div>
@@ -34,8 +34,9 @@ export default {
     }
   },
   methods: {
-    inBookDetails(){
-      //todo 将传过来的id响应会给点击后的事件，在页面之后加上id
+    inBookDetails(id){
+      //todo 添加新页面的名称
+      this.$router.push({ name: '新页面文件名', query: { id: id } });
     },
     fetchBookDetails() {
       this.axios

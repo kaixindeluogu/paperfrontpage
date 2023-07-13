@@ -61,10 +61,13 @@
                                src="https://cube.elemecdn.com/0/88/03b0d39583f48206768a7534e55bcpng.png"></el-avatar>
                       </template>
                   <el-dropdown-menu slot="dropdown">
+
+                    <el-dropdown-item icon="el-icon-user" command="openPersonalDialog" style="text-align: center">个人中心</el-dropdown-item>
+                    <div style="height: 1px;background-color: #999999;margin: 1px 10px; /* 调整横线的位置 */"></div>
                     <el-dropdown-item icon="el-icon-plus" command="openEditInfoDialog">修改资料</el-dropdown-item>
                     <el-dropdown-item icon="el-icon-plus" command="openEditAvatarDialog">修改头像</el-dropdown-item>
                     <el-dropdown-item icon="el-icon-plus" command="openEditPasswordDialog">修改密码</el-dropdown-item>
-                    <el-dropdown-item icon="el-icon-plus" divided command="openLogoutConfirm">退出登录</el-dropdown-item>
+                    <el-dropdown-item icon="el-icon-close" divided command="openLogoutConfirm">退出登录</el-dropdown-item>
                   </el-dropdown-menu>
 
                 </el-dropdown>
@@ -189,8 +192,8 @@ export default {
     },
     home() {
       const currentPath = this.$router.currentRoute.path;
-      if (currentPath !== '/Home') {
-        this.$router.replace({path: '/Home  '});
+      if (currentPath !== '/') {
+        this.$router.replace({path: '/'});
       }
     },
     loadCurrentUserInfo() {
@@ -232,7 +235,7 @@ export default {
   top: 0;
   left: 0;
   width: 100%;
-  background-image: url("../assets/img.png"); /* 替换为你的背景图片路径 */
+  background-image: url("../assets/img01.png"); /* 替换为你的背景图片路径 */
   background-size: cover;
   background-repeat: no-repeat;
   background-color: #fff;

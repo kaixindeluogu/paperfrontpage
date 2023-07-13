@@ -7,13 +7,14 @@
           <div class="book-details">
             <div class="book-cover">
               <div class="book-cover-inner">
-                <img :src="item.cover">
+                <img :src="item.cover" @click="inBookDetails">
               </div>
             </div>
             <div class="book-info">
               <div class="book-description-top">
-                <p class="book-name">{{item.name}}</p>
-                <p class="book-author">{{item.author}}</p>
+                <p class="book-name"  @click="inBookDetails">&nbsp{{item.name}}</p>
+                <p class="book-author">{{item.author}}
+                <i >{{item.publishTime}}出版</i></p>
               </div>
               <p class="book-introduction ellipsis">{{item.introduction}}</p>
             </div>
@@ -33,6 +34,9 @@ export default {
     }
   },
   methods: {
+    inBookDetails(){
+      //todo 将传过来的id响应会给点击后的事件，在页面之后加上id
+    },
     fetchBookDetails() {
       this.axios
           .create({'headers': {'Authorization': localStorage.getItem('jwt')}})
@@ -40,7 +44,7 @@ export default {
           .then(response => {
             console.log(localStorage.getItem('jwt'))
             if (response.data.state == 20000) {
-              console.log("++++++++++++++++++++++++++++++++++++++++=" + response.data)
+              console.log("++++++++++++=" + response.data)
               this.book = response.data.data;
               this.book.cover = response.data.cover;
               this.book.name = response.data.name;
@@ -65,16 +69,17 @@ export default {
 }
 
 .book-item {
-  flex: 0 0 calc(100% / 5);
+  flex: 0 0 calc(100% / 3.5);
   padding: 10px;
   box-sizing: border-box;
+  margin-right: 30px;
 }
 
 .book-frame {
-  border: 1px solid #ccc;
+
   padding: 10px;
-  border-radius: 5px;
-  background-color: paleturquoise /* 修改为你想要的背景颜色 */
+  border-radius: 10px;
+  background-color: rgba(255,255,255,0.5)/* 修改为你想要的背景颜色 */
 }
 
 .book-details {
@@ -83,8 +88,8 @@ export default {
 }
 
 .book-cover {
-  width: 120px;
-  height: 120px;
+  width: 170px;
+  height: 194px;
   margin-right: 10px;
   overflow: hidden;
   display: flex;
@@ -125,24 +130,28 @@ export default {
 }
 
 .book-name {
+  font-family: "STKaiti", "LiSu", "SimSun", "serif";
+  line-height: 1.5;
   font-size: 20px;
   font-weight: bold;
   margin: 0;
 }
 
 .book-author {
-  font-size: 12px;
-  margin: 0;
+
+  font-size: 10px;
+  margin: 15px 15px;
+
 }
 
 .book-introduction {
   font-size: 12px;
-  margin-top: 30px;
-  max-height: 36px;
+  margin-top: 20px;
+  max-height: 100%;
   overflow: hidden;
   text-overflow: ellipsis;
   display: -webkit-box;
-  -webkit-line-clamp: 2;
+  -webkit-line-clamp: 3;
   -webkit-box-orient: vertical;
 }
 .overflow-visible {
@@ -158,5 +167,6 @@ export default {
   display: -webkit-box;
   -webkit-line-clamp: 3;
   -webkit-box-orient: vertical;
+
 }
 </style>

@@ -1,4 +1,5 @@
 <template>
+<!--    &nbsp    空字符     -->
   <div>
     <el-container>
       <el-footer height="200px" style="background-color: #f0f0f0; " class="footer">

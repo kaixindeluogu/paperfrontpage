@@ -25,11 +25,9 @@
         </el-col>
         <el-col :span="6">
           <div class="grid-content bg-purple" style="font-size: 24px">
-            <i class="el-icon-paperclip" style="font-size: 24px;color: pink"></i><a href="#"
-                                                                                    style="text-decoration: none;color: black">广场</a>
+            <i class="el-icon-paperclip" style="font-size: 24px;color: pink"></i><a href="#"style="text-decoration: none;color: black">广场</a>
             &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-            <i class="el-icon-paperclip" style="font-size: 24px;color: pink"></i><a href="#"
-                                                                                    style="text-decoration: none;color: black">小黑屋</a>
+            <i class="el-icon-paperclip" style="font-size: 24px;color: pink"></i><a href="#"style="text-decoration: none;color: black">小黑屋</a>
           </div>
         </el-col>
 
@@ -43,15 +41,6 @@
 
         <el-col :span="14" style="margin-top: 20px;text-align: center;">
          <BannerView />
-<!--            <div>-->
-<!--              <el-carousel>-->
-<!--                <el-carousel-item v-for="item in 4">-->
-<!--                  <img src="https://cdn.tmooc.cn/bsfile//imgad///2d312700f1b14fbfa123dfa0ae987bdf.jpg" width="900px"-->
-<!--                       height="100%"/>-->
-<!--                </el-carousel-item>-->
-<!--              </el-carousel>-->
-<!--            </div>-->
-
         </el-col>
 
         <el-col :span="10" style="margin-top: 20px;text-align: center;background-color: white">
@@ -73,12 +62,15 @@
           </el-col>
         </el-col>
       </el-row>
+
       <el-row style="background-color: white">
         <el-col span="3">
-          <p style="font-size: 28px;line-height: 65px;margin: 0">我的课程</p>
+          <p style="font-size: 28px;line-height: 65px;margin: 0">推荐图书</p>
         </el-col>
+
         <el-col span="21">
           <!--我的课程导航开始-->
+
           <el-menu mode="horizontal" default-active="0" active-text-color="orange">
             <el-menu-item index="0">IT</el-menu-item>
             <el-menu-item index="1">健身运动</el-menu-item>
@@ -88,7 +80,7 @@
           </el-menu>
           <!--我的课程导航结束-->
         </el-col>
-      </el-row>
+      </el-row> <BookDetails />
       <el-row gutter="20">
         <el-col v-for="r in 4" span="6">
           <el-card style="margin: 10px 0">
@@ -115,11 +107,11 @@
         <el-col span="3">
 
           <p style="font-size: 28px;line-height: 65px;margin: 0">
-            <i class="el-icon-video-camera">精品课程</i>
+            <i class="el-icon-video-booker">精品书籍</i>
           </p>
         </el-col>
       </el-row>
-      <BookDetails />
+
       <!--精品课程列表开始-->
       <el-row gutter="20">
         <el-col v-for="r in 4" span="6">
@@ -205,19 +197,13 @@ export default {
   data(){
     return{
       categories:[
-          {name:"绘画设计"},
-          {name:"绘画设计"},
-          {name:"绘画设计"},
-          {name:"绘画设计"},
-          {name:"绘画设计"},
-          {name:"绘画设计"},
-          {name:"绘画设计"},
       ],
 
   }
 
   },
   methods: {
+
     handleClick() {
       window.scrollTo(0, 0);
     },
@@ -232,18 +218,15 @@ export default {
 </script>
 
 <style>
+.home{
+  max-width: 1500px; /* 设置最大宽度为1200px */
+  margin-left: auto; /* 页面居中对齐 */
+  margin-right: auto;
+  padding-left: 20px; /* 左侧留出20px的空白间距 */
+  padding-right: 100px; /* 右侧留出20px的空白间距 */
 
-
-.popup-container {
-  position: absolute;
-  top: 100%; /* 将弹窗的顶部与按钮底部对齐 */
-  left: 560px;
-  background-color: greenyellow;
-  width: 300px;
-  height: 200px;
-  padding: 10px;
-  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
 }
+
 
 
 .custom-form-item label {
@@ -251,12 +234,7 @@ export default {
   color: #409EFF;
 }
 
-.gezhonganniu {
-  position: relative;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-}
+
 
 .gezhonganniu > img {
   padding: 0 !important;
@@ -288,51 +266,8 @@ export default {
   cursor: pointer;
 }
 
-.anniu {
-  width: 300px;
-  height: 80px;
-  transform: skew(-5deg, -5deg) rotate(5deg);
-  padding: 0;
-  font-size: 45px;
-  border-radius: 20px;
-  border-width: 5px;
-  color: #52bcff;
-  font-weight: bold;
-  background-color: #52bcff;
-}
-
-.el-dialog {
-  border-radius: 55px;
-  border: none;
-  padding: 0;
-  bottom: 0;
-}
-
 .center1 a {
   text-decoration: none;
-}
-
-.el-icon-close:before {
-  color: rgba(255, 0, 0, 0);
-  content: "\e6db";
-}
-
-.el-dialog__header {
-  color: rgba(255, 0, 0, 0);
-  padding: 0;
-}
-
-.el-dialog__body {
-  padding: 0px;
-  color: rgba(255, 0, 0, 0);
-  font-size: 14px;
-  word-break: break-all;
-}
-
-.el-dialog,
-.el-pager li {
-  background-color: rgba(255, 0, 0, 0.0);
-  background-size: 100%;
 }
 
 

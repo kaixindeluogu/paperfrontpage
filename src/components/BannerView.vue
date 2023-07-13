@@ -3,7 +3,7 @@
     <el-carousel height="288px">
 
       <el-carousel-item v-for="item in bannerArr" :key="item.title">
-        <img :src="item.imgUrl" width="900px" >
+        <img :src="item.imgUrl" width="850px" height="312.5px"  >
       </el-carousel-item>
     </el-carousel>
   </div>

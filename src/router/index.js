@@ -32,11 +32,7 @@ const routes = [
    {
     path: '/',
     component: () => import(/* webpackChunkName: "about" */ '../views/HomeView.vue')
-  },
-
-
-
-
+  }
 
 ]
 

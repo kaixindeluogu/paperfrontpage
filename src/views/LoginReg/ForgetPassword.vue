@@ -1,4 +1,5 @@
 <template>
+<!--  密保问题找回密码页面-->
   <div class="login-page">
     <div class="login-box">
       <el-form label-width="80px" style="width: 400px;margin: 50px 10px 50px; ">
@@ -15,7 +16,7 @@
         </el-form-item>
         <el-form-item class="a" label="密保问题">
           <!--event.target.value给下拉框选项用value复制给变量-->
-          <select id="fruit-select" style="width: 320px;height: 40px;font-size: 10px"
+          <select id="fruit-select" style="width: 320px;height: 40px;font-size: 10px;background-color: skyblue"
                   @change="user.question = $event.target.value">
             <!--第一个value默认不进行赋值-->
             <option value="" disabled selected hidden>请选择一个问题</option>
@@ -29,7 +30,7 @@
         </el-form-item>
         <el-form-item>
           <el-button type="primary" @click="forget()">用户验证</el-button>
-          <a href="/forgetPasswordEmail">邮箱验证</a>
+          <a href="/forgetPasswordEmail" class="forget-Password-Email">邮箱验证</a>
         </el-form-item>
       </el-form>
 
@@ -50,6 +51,9 @@ export default {
     }
   },
   methods: {
+    /**
+     * 密保问题找回密码方法
+     */
     forget() {
       if (this.user.password == this.user.secondPassword) {
         if (this.user.username.length === 0 ||
@@ -58,6 +62,7 @@ export default {
           this.$message.error("选项不能为空");
           return;
         }
+        //邮箱正则
         let regex = /^(?=.*[a-zA-Z])(?=.*\d)[a-zA-Z\d]{6,16}$/;
         if (!regex.test(this.user.password)) {
           this.$message.error("密码格式不正确");
@@ -123,5 +128,27 @@ export default {
 .forget-password,
 .register {
   margin-left: 20px;
+}
+
+.login-box input[type="text"],
+.login-box input[type="password"] {
+  width: 100%;
+  padding: 10px;
+  border-radius: 5px;
+  border: none;
+  background-color: rgba(255, 255, 255, 0.2);
+  color: #fff;
+  margin-bottom: 10px;
+}
+
+.el-form-item__label{
+  color: skyblue;
+}
+
+/* 修改忘记密码和注册链接的样式 */
+
+.login-box .forget-Password-Email {
+  color: #fff;
+  text-decoration: none;
 }
 </style>

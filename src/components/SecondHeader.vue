@@ -130,7 +130,7 @@ export default {
       console.log('准备弹出修改当前用户密码的对话框');
     },
     openLogoutConfirm() {
-      //todo跳出弹框,并确认是否登出
+
       this.$confirm('您将退出个人信息登录, 是否继续?', '提示', {
         confirmButtonText: '确定',
         cancelButtonText: '取消',

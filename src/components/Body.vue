@@ -1,48 +1,11 @@
 <template>
   <div class="home">
-<!--  该div用于跟头部粘连显示，别删  -->
-    <div style="height: 15px">
-
-    </div>
     <el-main class="custom-main" style="background-color: white;">
-      <el-row :gutter="20">
-        <el-col :span="15" style="border: 1px solid white">
-          <div class="main_div_button">
-<!--            轮播图上方分类-->
-            <div class="button-wrapper">
-              <div class="button"><i class="el-icon-paperclip" style="font-size: 20px;color: pink"></i>
-                <div><a href="#">IT</a></div>
-              </div>
-              <div class="button"  v-for="category in categories">
-                <a href="#">
-                <!-- 111显示点赞量 各个分类 -->
-                <button>111</button>
-                <div>{{category.name}}</div>
-              </a></div>
-            </div>
-
-          </div>
-        </el-col>
-        <el-col :span="6">
-          <div class="grid-content bg-purple" style="font-size: 24px">
-            <i class="el-icon-paperclip" style="font-size: 24px;color: pink"></i><a href="#"style="text-decoration: none;color: black">广场</a>
-            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-            <i class="el-icon-paperclip" style="font-size: 24px;color: pink"></i><a href="#"style="text-decoration: none;color: black">小黑屋</a>
-          </div>
-        </el-col>
-
-        <el-col :span="1">
-          <div class="grid-content bg-purple">logo</div>
-        </el-col>
-      </el-row>
-
       <el-row :gutter="10">
 <!--        轮播图-->
-
         <el-col :span="14" style="margin-top: 20px;text-align: center;">
          <BannerView />
         </el-col>
-
         <el-col :span="10" style="margin-top: 20px;text-align: center;background-color: white">
           <el-col v-for="r in 3" span="8">
             <div class="image-with-text">
@@ -134,34 +97,6 @@
         <p></p>
       </div>
       <!--精品课程列表结束-->
-
-      <el-row style="background-color: white">
-        <el-col span="3">
-          <p style="font-size: 28px;line-height: 65px;margin: 0"><i class="el-icon-data-line">会员课程</i></p>
-        </el-col>
-      </el-row>
-      <!--会员课程列表开始-->
-      <el-row gutter="20">
-        <el-col v-for="r in 4" span="6">
-          <el-card style="margin: 10px 0">
-            <img src="@/assets/a.jpg" width="100%" height="144">
-            <p style="height: 40px">健身</p>
-            <p></p>
-            <el-row gutter="20">
-              <el-col span="4">
-              </el-col>
-              <el-col span="12" style=" color: red;font-size: 14px">￥1.00(会员免费)</el-col>
-              <el-col span="8">
-                <span style="float: right;font-size: 12px;color: #ccc;position: absolute;right: 2px">已有xxx人预约</span>
-              </el-col>
-            </el-row>
-          </el-card>
-        </el-col>
-      </el-row>
-      <div style="text-align: center;margin-bottom: 20px">
-        <p></p>
-      </div>
-      <!--会员课程列表结束-->
     </el-main>
 
 
@@ -188,6 +123,7 @@
 
 import BannerView from "@/components/BannerView.vue";
 import BookDetails from "@/components/BookDetails";
+
 export default {
   name: "Body",
   components: {

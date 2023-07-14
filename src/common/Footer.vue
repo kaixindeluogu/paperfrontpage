@@ -1,4 +1,5 @@
 <template>
+<!--    &nbsp    空字符     -->
   <div>
     <el-container>
       <el-footer height="200px" style="background-color: #f0f0f0; " class="footer">
@@ -11,17 +12,18 @@
             <div style="position: relative;margin-left: 100px;margin-top: 50px;text-align: center;
                height: 100%;width: 100%">
               <el-row>
-                <i> 友情链接:</i>
-                <el-link v-for="keyword in keywords" :key="keyword" :href="getKeywordLink(keyword)">
-                  {{ keyword}}||
+                 <b>友情链接:</b>
+                <el-link  v-for="keyword in keywords" :key="keyword" :href="getKeywordLink(keyword)  ">
+                  &nbsp{{ keyword}}&nbsp&nbsp&nbsp&nbsp&nbsp
                 </el-link>
               </el-row>
             </div>
           </el-col>
           <!--    bottomright-->
-          <el-col :span="10" style="padding-left: 100px;padding-top: 40px">
+          <el-col :span="10" style="padding-left: 100px;padding-top: 50px">
 <!--            <img src="../assets/logo.png" height="20px">-->
-            <el-row>广告链接
+            <el-row>
+              <b>广告链接:</b>
               <el-link v-for="item in adver"  :key="item.id" :href="item.url" >&nbsp{{item.name}}&nbsp</el-link>
             </el-row>
           </el-col>

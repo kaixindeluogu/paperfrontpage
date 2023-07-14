@@ -1,10 +1,11 @@
 <template>
+<!-- 邮箱找回页面 -->
   <div class="login-page">
     <div class="login-box">
       <el-form label-width="80px" style="width: 400px;margin: 50px 10px 50px; ">
         <el-form-item class="a" label="邮箱">
           <el-input placeholder="填写正确格式" v-model="user.email"></el-input>
-          <button type="button" id="send-code-btn" @click="send()">发送验证码</button>
+          <button type="button" id="send-code-btn" @click="send()" style="background-color: skyblue">发送验证码</button>
         </el-form-item>
         <el-form-item class="a" label="验证码">
           <el-input placeholder="填写邮箱验证码" v-model="user.code"></el-input>
@@ -41,6 +42,9 @@ export default {
     }
   },
   methods: {
+    /**
+     * 发送验证码方法
+     */
     send() {
       //^ 表示匹配字符串的开始位置。
       //([a-zA-Z0-9_\-\.]+) 表示匹配一个或多个字母、数字、下划线、短横线或点号。
@@ -64,11 +68,11 @@ export default {
         }
 
       });
-      // 将按钮变为不可用状态
+      // 将发送按钮变为不可用状态
       var btn = document.getElementById('send-code-btn');
       btn.disabled = true;
 
-      // 开始倒计时
+      // 120s开始倒计时
       var count = 120;
       var timer = setInterval(function () {
         count--;
@@ -82,8 +86,11 @@ export default {
 
 
     },
-    /*增加一个else判断两次输入的密码是否一致*/
+    /**
+     * 邮箱找回密码请求后端方法
+     */
     forget() {
+      //判断两次密码是否一致
       if (this.user.password == this.user.secondPassword) {
         if (this.user.password.length === 0 || this.user.secondPassword.length === 0
         ) {
@@ -138,5 +145,19 @@ export default {
 .forget-password,
 .register {
   margin-left: 20px;
+}
+
+.login-box input[type="text"],
+.login-box input[type="password"] {
+  width: 100%;
+  padding: 10px;
+  border-radius: 5px;
+  border: none;
+  background-color: rgba(255, 255, 255, 0.2);
+  color: #fff;
+  margin-bottom: 10px;
+}
+.el-form-item__label{
+  color: skyblue;
 }
 </style>

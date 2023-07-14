@@ -1,10 +1,16 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
-
+import HomeView from '../views/HomeView.vue'
 
 Vue.use(VueRouter)
 
 const routes = [
+ /**新页面路由地址
+  * {
+    path: '',
+    name: '',
+    component: () => import('../components/')
+  },*/
   {
     path: '/login',
     component: () => import(/* webpackChunkName: "about" */ '../views/LoginReg/Login.vue')
@@ -33,10 +39,7 @@ const routes = [
     path: '/',
     component: () => import(/* webpackChunkName: "about" */ '../views/HomeView.vue')
   },
-  {
-    path: '/readZz',
-    component: () => import('../BookDetails/read-zz.vue')
-  },
+
 
 
 

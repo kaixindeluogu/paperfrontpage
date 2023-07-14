@@ -1,6 +1,6 @@
 <template>
   <div :class="{ 'fixed-header': isFixed }" v-if="showheader">
-    <div style="width: 100%;height: 40px;position: absolute;backdrop-filter: blur(90px); line-height: 40px">
+    <div style="width: 100%;height: 45px;position: absolute;padding-top: 1px;backdrop-filter: blur(90px); line-height: 40px">
       <el-row :gutter="20">
         <el-col :span="8" :offset="2" style="line-height: 40px">
           <el-list :direction="'horizontal'" >
@@ -219,7 +219,6 @@ export default {
 
 .fixed-header {
   background-color: rgba(255,255,255,0.5);
-
   position: fixed;
   top: 0;
   left: 0;

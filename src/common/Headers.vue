@@ -30,7 +30,7 @@
             </el-col>
             <el-col span="4">
               <el-input
-                       style="margin-top: 40px;margin-left: 70px;border-radius: 10px; width: 200px;" placeholder="百日孤独">
+                       style="margin-top: 40px;margin-left: 20px;border-radius: 10px; width: 200px;" placeholder="百日孤独">
                 <el-button slot="append" icon="el-icon-search" style="color:cornflowerblue;">搜索</el-button>
               </el-input>
             </el-col>
@@ -52,7 +52,7 @@
 
               <div class="login-user1" v-else>
 
-                  <span class="welcome"><b>{{ currentUserName }}</b>&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp</span>
+                  <span class="welcome"><b>{{ currentUserName }}</b>&nbsp&nbsp&nbsp&nbsp&nbsp</span>
                     <el-dropdown @command="handleCommand">
                       <template>
                     <el-avatar v-if="currentUserAvatar" size="medium" :src="currentUserAvatar"></el-avatar>
@@ -142,7 +142,7 @@ export default {
           type: 'success',
           message: '已退出登录!'
         });
-        this.$router.push('/home')
+        location.reload();
       }).catch(() => {
         this.$message({
           type: 'info',
@@ -207,6 +207,7 @@ export default {
     this.loadCurrentUserInfo();
     this.userLogin();
     this.sortPage();
+
   },
 }
 </script>
@@ -221,13 +222,8 @@ export default {
 
 .login-user1 .welcome {
   font-size: 19px;
-  line-height: 40px;
+  line-height: 60px;
   color: black;
-
-}
-
-
-#el-header {
 
 }
 

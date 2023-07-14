@@ -3,9 +3,9 @@
   <div>
     <Headers/>
     <el-main class="center">
-      <el-breadcrumb separator-class="el-icon-arrow-right" style="margin: 10px">
-        <el-breadcrumb-item :to="{ path: '/' }">首页</el-breadcrumb-item>
-        <el-breadcrumb-item>正文</el-breadcrumb-item>
+      <el-breadcrumb separator-class="el-icon-arrow-right" style="margin: 70px 0 30px 5px;font-size: 15px">
+        <el-breadcrumb-item :to="{ path: '/' }" style="font-size: 18px;margin-top: -2px">首页</el-breadcrumb-item>
+        <el-breadcrumb-item >正文</el-breadcrumb-item>
       </el-breadcrumb>
       <div style="height: 284px;padding-top: 30px; ">
           <!--        基本信息 左-->

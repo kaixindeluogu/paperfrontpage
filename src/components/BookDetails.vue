@@ -67,13 +67,14 @@ export default {
 .book-list {
   display: flex;
   flex-wrap: wrap;
+  margin-right: 20px;
 }
 
 .book-item {
-  flex: 0 0 calc(100% / 3.5);
-  padding: 10px;
+  flex: 0 0 calc(100% / 3.1);
+  padding: 1px;
   box-sizing: border-box;
-  margin-right: 30px;
+  margin-right: 10px;
 }
 
 .book-frame {

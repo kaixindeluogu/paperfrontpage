@@ -50,23 +50,25 @@ export default {
       let url = 'http://localhost:8081/v1/categories/'+categoryId;
       console.log('url = ' + url);
 
-      this.axios.get(url).then((response) => {
+      this.axios
+          .create({'headers': {'Authorization': localStorage.getItem('jwt')}})
+          .get(url).then((response) => {
         let jsonResult = response.data;
         if (jsonResult.state == 20000) {
-          this.categories = jsonResult.data.data;
+          this.categories = jsonResult.data;
         }
       });
     },
 
     //加载男频图书列表
     loadBookList() {
-      let url = 'http://localhost:8081/books/list-by-category/'+categories.id;
+      let url = 'http://localhost:8081/books/list-by-category/';
       console.log('url = '+url);
 
       this.axios.get(url).then((response) => {
         let jsonResult = response.data;
         if (jsonResult.state == 20000) {
-          this.books = jsonResult.data.data;
+          this.books = jsonResult.data.list;
         }
       })
     }

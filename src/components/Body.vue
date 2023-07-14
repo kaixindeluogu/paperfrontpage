@@ -50,36 +50,8 @@
 
 <!--     图书详情 -->
       <BookDetails />
-
-      <el-row style="background-color: white">
-        <el-col span="3">
-
-          <p style="font-size: 28px;line-height: 65px;margin: 0">
-            <i class="el-icon-video-booker">精品书籍</i>
-          </p>
-        </el-col>
-      </el-row>
-
       <!--精品课程列表开始-->
-      <el-row gutter="20">
-        <el-col v-for="r in 4" span="6">
-          <el-card style="margin: 10px 0">
-            <img src="@/assets/a.jpg" width="100%" height="144">
-            <p style="height: 40px">健身</p>
-            <p></p>
-            <el-row gutter="20">
-              <el-col span="4">
-              </el-col>
-              <el-col span="10" style="color: #0aa1ed">免费</el-col>
-              <el-col span="10">
-                <span style="float: right;font-size: 12px;color: #ccc;position: absolute;right: 2px">已有xxx人观看</span>
-              </el-col>
-            </el-row>
-          </el-card>
-        </el-col>
-      </el-row>
-      <div style="text-align: center;margin-bottom: 20px">
-      </div>
+      <BoyChannel/>
       <!--精品课程列表结束-->
     </el-main>
 
@@ -107,10 +79,12 @@
 
 import BannerView from "@/components/BannerView.vue";
 import BookDetails from "@/components/BookDetails";
+import BoyChannel from "@/components/BoyChannel";
 
 export default {
   name: "Body",
   components: {
+    BoyChannel,
     BookDetails,
     BannerView,
   },

@@ -39,11 +39,11 @@ const routes = [
     path: '/',
     component: () => import(/* webpackChunkName: "about" */ '../views/HomeView.vue')
   },
-
-
-
-
-
+    {
+        path: '/readZz',
+        name: '/readZz',
+        component: () => import('../BookDetails/read-zz.vue')
+    },
 ]
 
 const router = new VueRouter({

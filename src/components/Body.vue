@@ -6,21 +6,16 @@
         <el-col :span="14" style="margin-top: 20px;text-align: center;">
          <BannerView />
         </el-col>
+
         <el-col :span="10" style="margin-top: 20px;text-align: center;background-color: white">
-          <el-col v-for="r in 3" span="8">
+          <el-col v-for="book in books " span="8">
             <div class="image-with-text">
+              <!--  src="book.cover" @click=  -->
               <img style="border-radius: 10%;"
-                   src="https://cdn.tmooc.cn/bsfile//imgad///2d312700f1b14fbfa123dfa0ae987bdf.jpg" width="100%"
-                   height="144">
-              <div class="text-overlay">这是图片上的文字</div>
-            </div>
-          </el-col>
-          <el-col v-for="r in 3" span="8">
-            <div class="image-with-text">
-              <img style="border-radius: 10%;"
-                   src="https://cdn.tmooc.cn/bsfile//imgad///2d312700f1b14fbfa123dfa0ae987bdf.jpg" width="100%"
-                   height="144">
-              <div class="text-overlay">这是图片上的文字</div>
+                   src="https://cdn.tmooc.cn/bsfile//imgad///2d312700f1b14fbfa123dfa0ae987bdf.jpg"
+                  @click="GOBookDetails(book.id)"
+                   width="100%" height="144">
+              <div class="text-overlay" @click="GOBookDetails(book.id)">{{books.name}}这是图片上的文字</div>
             </div>
           </el-col>
         </el-col>
@@ -30,9 +25,7 @@
         <el-col span="3">
           <p style="font-size: 28px;line-height: 65px;margin: 0">推荐图书</p>
         </el-col>
-
         <el-col span="21">
-          <!--我的课程导航开始-->
 
           <el-menu mode="horizontal" default-active="0" active-text-color="orange">
             <el-menu-item index="0">IT</el-menu-item>
@@ -44,28 +37,9 @@
           <!--我的课程导航结束-->
         </el-col>
       </el-row>
+
+<!--     图书详情 -->
       <BookDetails />
-      <el-row gutter="20">
-        <el-col v-for="r in 4" span="6">
-          <el-card style="margin: 10px 0">
-            <img src="@/assets/a.jpg" width="100%" height="144">
-            <p style="height: 40px">健身</p>
-            <p></p>
-            <el-row gutter="20">
-              <el-col span="4">
-              </el-col>
-              <el-col span="10" style="font-size: 12px">开通日期:<br>2303/6/9</el-col>
-              <el-col span="10">
-                <span style="float: right;font-size: 12px;color: #ccc">班级:JSD2303</span>
-              </el-col>
-            </el-row>
-          </el-card>
-        </el-col>
-      </el-row>
-      <div style="text-align: center;margin-bottom: 20px">
-        <el-button>后期添加v-if 用户所购买的视频超过页面展示的4个之后 出现该按钮 向下展示后买的所有视频</el-button>
-      </div>
-      <!--我的课程列表结束-->
 
       <el-row style="background-color: white">
         <el-col span="3">
@@ -95,7 +69,6 @@
         </el-col>
       </el-row>
       <div style="text-align: center;margin-bottom: 20px">
-        <p></p>
       </div>
       <!--精品课程列表结束-->
     </el-main>
@@ -132,15 +105,32 @@ export default {
     BannerView,
   },
   data(){
+
     return{
       categories:[
       ],
-
+      books:[],
   }
 
   },
   methods: {
-
+    BookDetails() {
+      this.axios
+          .create({'headers': {'Authorization': localStorage.getItem('jwt')}})
+          .get("http://localhost:8081/v1/bookDeatils/list")
+          .then(response => {
+            console.log(localStorage.getItem('jwt'))
+            if (response.data.state == 20000) {
+              console.log("++++++++++++=" + response.data)
+              this.book = response.data.data;
+            }
+            window.abc = this.book.name
+          })
+    },
+    GOBookDetails(id){
+      //todo 添加新页面的名称
+      this.$router.push({ name: '/readZz', query: { id: id } });
+    },
     handleClick() {
       window.scrollTo(0, 0);
     },

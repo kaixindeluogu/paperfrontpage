@@ -21,8 +21,12 @@ export default {
     SecondHeader,
     Headers
   },
+  mounted() {
+    this.userLogin();
+  },
 };
 </script>
+
 <style>
 
 </style>

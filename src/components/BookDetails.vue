@@ -36,7 +36,7 @@ export default {
   methods: {
     inBookDetails(id){
       //todo 添加新页面的名称
-      this.$router.push({ name: '新页面文件名', query: { id: id } });
+      this.$router.push({ name: '/readZz', query: { id: id } });
     },
     fetchBookDetails() {
       this.axios

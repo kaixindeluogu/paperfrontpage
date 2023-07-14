@@ -8,14 +8,24 @@
         </el-col>
 
         <el-col :span="10" style="margin-top: 20px;text-align: center;background-color: white">
-          <el-col v-for="book in books " span="8">
-            <div class="image-with-text">
-              <!--  src="book.cover" @click=  -->
-              <img style="border-radius: 10%;"
-                   src="https://cdn.tmooc.cn/bsfile//imgad///2d312700f1b14fbfa123dfa0ae987bdf.jpg"
-                  @click="GOBookDetails(book.id)"
-                   width="100%" height="144">
-              <div class="text-overlay" @click="GOBookDetails(book.id)">{{books.name}}这是图片上的文字</div>
+
+          <el-col v-for="(book,index) in books " span="8">
+
+            <div class="image-with-text" >
+              <template v-if="index === 0">
+                <!-- 在第一张位置添加自定义文字 -->
+                <div class="text-overlay" @click="GOBookDetails(book.id)">
+                  <h3>畅销榜</h3>
+
+                </div>
+              </template>
+              <template v-else>
+              <img style="border-radius: 10%;width: 144px; height: 144px;margin-bottom: 10px;"
+                   :src="book.cover" @click="GOBookDetails(book.id)">
+              <div class="text-overlay" @click="GOBookDetails(book.id)">
+
+                {{book.name}}</div>
+              </template>
             </div>
           </el-col>
         </el-col>
@@ -107,8 +117,6 @@ export default {
   data(){
 
     return{
-      categories:[
-      ],
       books:[],
   }
 
@@ -117,14 +125,15 @@ export default {
     BookDetails() {
       this.axios
           .create({'headers': {'Authorization': localStorage.getItem('jwt')}})
-          .get("http://localhost:8081/v1/bookDeatils/list")
+          .get("http://localhost:8081/v1/adver/BookByBorrow")
           .then(response => {
             console.log(localStorage.getItem('jwt'))
             if (response.data.state == 20000) {
               console.log("++++++++++++=" + response.data)
-              this.book = response.data.data;
+              this.books = response.data.data;
+
             }
-            window.abc = this.book.name
+
           })
     },
     GOBookDetails(id){
@@ -140,11 +149,26 @@ export default {
     jumpMessage() {
       window.open('http://baidu.com', '_blank');
     }
+  },
+  mounted() {
+    this.BookDetails();
   }
 }
 </script>
 
 <style>
+h3{
+  padding-top: 40px; /* 将文本水平居中 */
+  writing-mode: vertical-rl;  /* 将文本以竖排显示，从右到左 */
+  color: linear-gradient(to bottom, #e79924, #bf71d4);  /* 设置字体颜色渐变 */
+  background: -webkit-linear-gradient(#d5921d, #b267c6);  /* 设置背景颜色渐变，确保渐变颜色与字体颜色一致 */
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  font-family: "Open Sans", Sans-serif;/*字体样式*/
+  font-size: 24px;  /* 设置字体大小 */
+  line-height: 30px;  /* 设置行高，根据需要调整 */
+  letter-spacing: 0.5em;  /* 设置字间距，根据需要调整 */
+}
 .home{
   max-width: 1500px; /* 设置最大宽度为1200px */
   margin-left: auto; /* 页面居中对齐 */
@@ -219,21 +243,6 @@ export default {
   text-decoration: none;
 }
 
-.main_div_button {
-  position: relative;
-}
-
-.button-wrapper {
-  position: absolute;
-  right: 10px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
-
-.button {
-  margin: 0 20px;
-}
 
 .button button {
   background-color: pink; /* 设置按钮的背景颜色为粉色 */
@@ -245,19 +254,5 @@ export default {
   display: inline-block;
 }
 
-.image-with-text img {
-}
-
-.image-with-text .text-overlay {
-  position: absolute;
-  top: 90%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  color: #ffffff;
-  font-size: 20px;
-  font-weight: bold;
-  text-align: center;
-  padding: 10px;
-}
 
 </style>

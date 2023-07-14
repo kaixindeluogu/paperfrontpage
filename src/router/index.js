@@ -44,6 +44,7 @@ const routes = [
         name: '/readZz',
         component: () => import('../BookDetails/read-zz.vue')
     },
+
 ]
 
 const router = new VueRouter({

@@ -6,6 +6,10 @@ import axios from 'axios';
 import qs from 'qs';
 import ElementUI from 'element-ui';
 import 'element-ui/lib/theme-chalk/index.css';
+import pdfjsLib from 'pdfjs-dist';
+
+Vue.prototype.$pdfjsLib = pdfjsLib;
+
 
 axios.defaults.withCredentials=true;
 
@@ -16,8 +20,8 @@ Vue.prototype.axios = axios;
 
 Vue.config.productionTip = false
 
-
 axios.defaults.withCredentials=true;
+
 
 new Vue({
   router,

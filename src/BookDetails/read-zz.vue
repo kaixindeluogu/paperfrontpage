@@ -148,8 +148,7 @@ export default {
       totalPages: 0,
       pdfDocument: null,
       pdfCanvas: null,
-
-
+      PdfUrl:''
     }
   },
 
@@ -242,31 +241,50 @@ export default {
   },
   mounted() {
 
-    this.originate()
-    this.parentUrl()
-    pdfjsLib.GlobalWorkerOptions.workerSrc = PDFJSWorker;
+    // this.originate()
+    // this.parentUrl()
+    // pdfjsLib.GlobalWorkerOptions.workerSrc = PDFJSWorker;
+    //
+    // this.pdfCanvas = this.$refs.pdfCanvas;
+    // let id = location.search.split("=")[1];
+    // const url = 'http://192.168.64.1:9000/files/f9ae2cf9-b32d-4a0a-8647-5945ba3f356a-JAVA_WEB_03JAVASCRIPT.pdf';// 替换为你的 PDF 文件路径
+    // let Url = 'http://localhost:8081/v1/bookDetailsPage/Article-content/' + id;
+    //
+    // this.axios
+    //     .create({'headers': {'Authorization': localStorage.getItem('jwt')}})
+    //     .get(Url).then((response) => {
+    //
+    //   //this.url = response.data.data.pdfUrl.split("\\?")[0]
+    //
+    //
+    //
+    //   console.log('url=' + this.url)
+    // })
+    // this.loadPdf(url)
+    //     .then(() => this.renderPage())
+    //     .catch(error => {
+    //       console.error('加载 PDF 文件时出错：', error);
+    //     });
+    pdfjsLib.GlobalWorkerOptions.workerSrc = '<path to pdf.worker.js>';
 
     this.pdfCanvas = this.$refs.pdfCanvas;
     let id = location.search.split("=")[1];
-    const url = 'http://192.168.64.1:9000/files/f9ae2cf9-b32d-4a0a-8647-5945ba3f356a-JAVA_WEB_03JAVASCRIPT.pdf';// 替换为你的 PDF 文件路径
-    let Url = 'http://localhost:8081/v1/bookDetailsPage/Article-content/' + id;
+    const Url = 'http://localhost:8081/v1/bookDetailsPage/Article-content/' + id;
 
-    this.axios
-        .create({'headers': {'Authorization': localStorage.getItem('jwt')}})
-        .get(Url).then((response) => {
-
-      //this.url = response.data.data.pdfUrl.split("\\?")[0]
-
-
-
-      console.log('url=' + this.url)
-    })
-    this.loadPdf(url)
-        .then(() => this.renderPage())
-        .catch(error => {
-          console.error('加载 PDF 文件时出错：', error);
-        });
-
+    this.axios.create({
+      headers: {
+        Authorization: localStorage.getItem('jwt')
+      }
+    }).get(Url).then((response) => {
+      console.log("url"+response.data.data)
+      this.PdfUrl = response.data.data
+      console.log(this.PdfUrl)
+      this.loadPdf(this.PdfUrl)
+          .then(() => this.renderPage())
+          .catch(error => {
+            console.error('加载 PDF 文件时出错：', error);
+          });
+    });
   }
   ,
 

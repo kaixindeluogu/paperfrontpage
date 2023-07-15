@@ -28,10 +28,9 @@
                 <el-menu-item index="4" style="color: black" @click="open3">关于我们</el-menu-item>
               </el-menu>
             </el-col>
-            <el-col span="4">
-              <el-input
-                  style="margin-top: 40px;margin-left: 20px;border-radius: 10px; width: 200px;" placeholder="百日孤独">
-                <el-button slot="append" icon="el-icon-search" style="color:cornflowerblue;">搜索</el-button>
+            <el-col :span="4">
+              <el-input style="margin-top: 20px" v-model="wd" @keydown.native.enter="search()" placeholder="请输入搜索的关键字">
+                <el-button slot="append" @click="search()" icon="el-icon-search"></el-button>
               </el-input>
             </el-col>
             <el-col span="4">
@@ -91,6 +90,8 @@ export default {
   name: "Headers",
   data() {
     return {
+      book:[],
+      wd:'',
       tableForm: [
         // {id: 1, name: "名著", url: "https://www.baidu.com"},
         // {id: 2, name: "小说", url: "https://www.baidu.com"}
@@ -101,6 +102,23 @@ export default {
   },
 
   methods: {
+    search() {
+      if (this.wd.trim() == "") {
+        this.$message.error("请输入搜索的内容!");
+        return;
+      }
+      // 构建搜索结果页面的路径
+      const searchResultPath = '/SearchResult/' + this.wd;
+
+      if (this.$route.path === searchResultPath) {
+        // 当前路由路径与搜索结果页面的路径相同，无需重新导航
+        return;
+      }
+
+      // 使用 $router.replace() 方法进行导航，并传递搜索内容作为参数
+      this.$router.replace(searchResultPath);
+    },
+
     //获取分类数据并实现点击跳转
     sortPage() {
       console.log(+localStorage.getItem('jwt'));

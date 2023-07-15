@@ -19,12 +19,15 @@
             &nbsp;&nbsp;&nbsp;&nbsp;
           </el-list>
         </el-col>
+
+
         <el-col :span="6">
-          <el-input style="height: 20px;border: none" placeholder="请输入搜索的关键字">
-            <el-button style="border: none" slot="append" icon="el-icon-search">
+          <el-input style="height: 20px;border: none" v-model="wd" @keydown.native.enter="search()" placeholder="请输入搜索的关键字">
+            <el-button style="border: none" @click="search()" slot="append" icon="el-icon-search">
             </el-button>
           </el-input>
         </el-col>
+
         <el-col :span="6" :offset="2">
           <div v-if="userLogin()">
             <!--              初始页面登录框-->
@@ -65,6 +68,9 @@
 export default {
   data() {
     return {
+
+      book:[],
+      wd:'',
       showheader:false,
       isFixed: false,
       tableForm: [
@@ -85,6 +91,22 @@ export default {
     window.removeEventListener('scroll', this.handleScroll);
   },
   methods: {
+    search() {
+      if (this.wd.trim() == "") {
+        this.$message.error("请输入搜索的内容!");
+        return;
+      }
+      // 构建搜索结果页面的路径
+      const searchResultPath = '/SearchResult/' + this.wd;
+
+      if (this.$route.path === searchResultPath) {
+        // 当前路由路径与搜索结果页面的路径相同，无需重新导航
+        return;
+      }
+
+      // 使用 $router.replace() 方法进行导航，并传递搜索内容作为参数
+      this.$router.replace(searchResultPath);
+    },
     handleScroll() {
       // 获取页面滚动的距离
       const scrollTop = document.documentElement.scrollTop || document.body.scrollTop;

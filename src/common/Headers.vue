@@ -107,8 +107,6 @@ export default {
         this.$message.error("请输入搜索的内容!");
         return;
       }
-
-
       // 构建搜索结果页面的路径
       const searchResultPath = '/SearchResult/' + this.wd;
 
@@ -119,8 +117,8 @@ export default {
 
       // 使用 $router.replace() 方法进行导航，并传递搜索内容作为参数
       this.$router.replace(searchResultPath);
-
     },
+
     //获取分类数据并实现点击跳转
     sortPage() {
       console.log(+localStorage.getItem('jwt'));

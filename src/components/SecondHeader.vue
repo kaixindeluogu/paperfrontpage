@@ -19,13 +19,14 @@
             &nbsp;&nbsp;&nbsp;&nbsp;
           </el-list>
         </el-col>
+
+
         <el-col :span="6">
           <el-input style="height: 20px;border: none" v-model="wd" @keydown.native.enter="search()" placeholder="请输入搜索的关键字">
             <el-button style="border: none" @click="search()" slot="append" icon="el-icon-search">
             </el-button>
           </el-input>
         </el-col>
-
 
         <el-col :span="6" :offset="2">
           <div v-if="userLogin()">
@@ -95,7 +96,6 @@ export default {
         this.$message.error("请输入搜索的内容!");
         return;
       }
-
       // 构建搜索结果页面的路径
       const searchResultPath = '/SearchResult/' + this.wd;
 

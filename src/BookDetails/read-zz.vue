@@ -79,7 +79,9 @@
   justify-content: center;margin-top: 20px;font-size: 23px;">
           <button @click="previousPage" :disabled="currentPage === 1" class="size"><i class="el-icon-d-arrow-left"></i></button>
           <b style="margin: 10px 30px 0 30px;font-size: 26px">{{currentPage}}</b>
-          <button @click="nextPage" :disabled="currentPage === totalPages"class="size"><i class="el-icon-d-arrow-right"></i></button>
+          <button @click="nextPage" :disabled="currentPage === totalPages"class="size">
+            <i class="el-icon-d-arrow-right"></i>
+          </button>
         </div>
       </div>
 
@@ -109,11 +111,6 @@ export default {
       comment: {content: ""},
       //书名 作者 借阅数量 详细资料 出版社 封面 出版时间 子标签分类
       BasicInformation: [],
-
-      //作者头像
-      circleUrl: "https://cube.elemecdn.com/3/7c/3ea6beec64369c2642b92c6726f1epng.png",
-      Cumulative: "1763.55",
-      TotalNumberOfWorks: "3",
       currentPage: 1,
       totalPages: 0,
       pdfDocument: null,
@@ -121,7 +118,10 @@ export default {
       PdfUrl:'',
       pdfNumPages:'',
       //用户id
-      UserId:''
+      UserId:'',
+      //bookId
+      id:'',
+      traceNo:'',
     }
   },
 
@@ -130,7 +130,7 @@ export default {
       return pdfjsLib.getDocument(url)
           .promise.then(pdf => {
             this.pdfDocument = pdf;
-            this.totalPages = pdf.numPages;
+            this.totalPages = 3;
 
           });
     },
@@ -158,32 +158,17 @@ export default {
         this.renderPage();
       }
     },
-    //查验权限 是否有vip
-    PurchaseRestriction(){
-      this.UserId=localStorage.getItem("id");
-      let id = location.search.split("=")[1];
-      let Url = 'http://localhost:8081/v1/bookDetailsPage/limit/'+3+'/'+id;
-      this.axios
-          .create({'headers': {'Authorization': localStorage.getItem('jwt')}})
-          .get(Url).then((response) => {
-            let tradeStatus = response.data.data;
-            if (tradeStatus == 0){
-              this.read();
-            }else {
 
-              this.open();
-            }
-      })
-    },
     //弹框：没有购买此书会弹出此框
     open() {
-      this.$confirm('购买此书以观看全部章节', '提示', {
-        confirmButtonText: '去购买',
-        cancelButtonText: '取消',
+      this.$confirm('点击开始阅读观看之后内容', '提示', {
+        confirmButtonText: '去点击',
+        cancelButtonText: '否',
         type: 'warning',
         center: true
       }).then(() => {
-        window.location.href = 'localhost:8081/alipay/pay?subject=香蕉&traceNo=213123131312312&totalAmount=6.99';
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+
       }).catch(() => {
         this.$message({
           type: 'info',
@@ -193,27 +178,35 @@ export default {
     //点击下一页的时候
     nextPage() {
       if (this.currentPage == 2){
-        this.PurchaseRestriction();
-      }else{
+        this.open();
+      }else {
         if (this.currentPage < this.totalPages){
           this.currentPage++;
           this.renderPage();
         }
       }
+
+
     },
     //根据id跳转页面
     read() {
-      let id = location.search.split("=")[1];
-      this.$router.push({ name: '/ArticleContent', query: { id: id } });
+
+      this.$router.push({ name: '/ArticleContent', query: { id: this.id } });
 
     },
     //加入到书架
     add() {
-      let Url = '';
+      let sum = {userId:this.UserId,bookId:this.bookId}
+      let Url = 'http://localhost:8081/v1/favorites/addbook';
       this.axios
           .create({'headers': {'Authorization': localStorage.getItem('jwt')}})
-          .get(Url).then((response) => {
-
+          .post(Url,sum).then((response) => {
+          if (response.data.state==20000){
+            this.$message({
+              type: 'info',
+              message: '已添加',
+            })
+          }
       })
     },
     //点击举报的时候把书籍id也传进去
@@ -223,8 +216,8 @@ export default {
     originate() {
       //起始 需要的信息
       //文章信息
-      let id = location.search.split("=")[1];
-      let Url = 'http://localhost:8081/v1/bookDetailsPage/Basic-information/'+id;
+
+      let Url = 'http://localhost:8081/v1/bookDetailsPage/Basic-information/'+this.id;
       this.axios
           .create({'headers': {'Authorization': localStorage.getItem('jwt')}})
           .get(Url).then((response) => {
@@ -234,6 +227,10 @@ export default {
     }
   },
   mounted() {
+    //获取url上的bookId
+    this.id = location.search.split("=")[1];
+    //查阅 用户id
+    this.UserId=localStorage.getItem("id");
     this.originate();
     pdfjsLib.GlobalWorkerOptions.workerSrc = '<path to pdf.worker.js>';
 

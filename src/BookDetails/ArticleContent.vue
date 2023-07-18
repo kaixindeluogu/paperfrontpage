@@ -3,7 +3,7 @@
     <Headers/>
     <main>
       <div class="centers">
-        <canvas ref="pdfCanvas" style="width: 1000px ;height: 1400px"></canvas>
+        <canvas ref="pdfCanvas" style="width: 1000px ;height: 1400px;margin-top: 50px"></canvas>
       </div>
 
 
@@ -33,7 +33,13 @@ export default {
       totalPages: 0,
       pdfDocument: null,
       pdfCanvas: null,
-      PdfUrl:''
+      PdfUrl:'',
+      //用户id
+      UserId:'',
+      //bookId
+      id:'',
+      //唯一编码
+      traceNo:''
     };
   },
 
@@ -73,9 +79,7 @@ export default {
     },
     //查验权限 是否有vip
     PurchaseRestriction(){
-      this.UserId=localStorage.getItem("id");
-      let id = location.search.split("=")[1];
-      let Url = 'http://localhost:8081/v1/bookDetailsPage/limit/'+3+'/'+id;
+      let Url = 'http://localhost:8081/v1/bookDetailsPage/limit/'+3+'/'+this.id;
       this.axios
           .create({'headers': {'Authorization': localStorage.getItem('jwt')}})
           .get(Url).then((response) => {
@@ -93,7 +97,23 @@ export default {
         type: 'warning',
         center: true
       }).then(() => {
-        window.location.href = 'https://excashier-sandbox.dl.alipaydev.com/standard/auth.htm?payOrderId=192962a2368d4c8bb2d1ea8ab4c43e5d.00';
+        //获取traceNo
+        let Url2 = 'http://localhost:8081/v1/snowflake/';
+        this.axios
+            .create({'headers': {'Authorization': localStorage.getItem('jwt')}})
+            .post(Url2).then((response) => {
+          if (response.data.state == 20000){
+            this.traceNo = response.data.data;
+            console.log("------------"+this.traceNo)
+          }
+        })
+        //向后端发送请求 调取支付宝
+        let Url = 'http://localhost:8081/alipay/pay?subject='+this.BasicInformation.name+'&traceNo='+this.traceNo+'&totalAmount=7.99&userId='+3+'&bookId='+this.id;
+        this.axios
+            .create({'headers': {'Authorization': localStorage.getItem('jwt')}})
+            .get(Url).then((response) => {
+
+        })
       }).catch(() => {
         this.$message({
           type: 'info',
@@ -116,8 +136,7 @@ export default {
     originate() {
       //起始 需要的信息
       //文章信息
-      let id = location.search.split("=")[1];
-      let Url = 'http://localhost:8081/v1/bookDetailsPage/Basic-information/'+id;
+      let Url = 'http://localhost:8081/v1/bookDetailsPage/Basic-information/'+this.id;
       this.axios
           .create({'headers': {'Authorization': localStorage.getItem('jwt')}})
           .get(Url).then((response) => {
@@ -127,6 +146,10 @@ export default {
     }
   },
   mounted() {
+    //获取url上的bookId
+    this.id = location.search.split("=")[1];
+    //查阅 用户id
+    this.UserId=localStorage.getItem("id");
     // 判断是否存在存储的页码数据
     const storedPage = sessionStorage.getItem('currentPage');
     if (storedPage) {

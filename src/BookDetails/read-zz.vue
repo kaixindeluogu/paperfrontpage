@@ -53,42 +53,9 @@
           </div>
 
         </div>
-        <!--        右\-->
-        <div class="BasicInformation-right">
-          <el-card style="width: 260px;height: 191px">
-            <div style="height: 65px;">
-              <div class="block">
-                <el-avatar :size="60" :src="circleUrl" style="margin-top: 2px;float: left"></el-avatar>
-              </div>
-              <div style="padding: 10px 0 0 70px">
-                <b>{{ BasicInformation.author }}</b>
-                <br>
-                <div style="margin-top: 5px;margin-left: 4px">
-                  <span
-                      style="background-color: #222222;color: #fce0b0 ;padding: 5px;border-radius: 13px;font-size: 14px">本书作者</span>
-                </div>
-              </div>
-            </div>
-            <div style="height: 70px;overflow: hidden ;">
-              <div style="width: 80px;height: 43px;margin-top: 14px;text-align: center; float: left">
-                <div style="height: 21px">
-                  <span style="font-size: 20px">{{ TotalNumberOfWorks }}</span>本
-                </div>
-                <div style="height: 22px;font-size: 13px">
-                  <span>作品总数</span>
-                </div>
-              </div>
-              <div style="width: 90px;height: 43px;margin-top: 14px;text-align: center; float: left">
-                <div style="height: 21px">
-                  <span style="font-size: 20px">{{ Cumulative }}</span>万
-                </div>
-                <div style="height: 22px;font-size: 13px">
-                  <span>累计字数</span>
-                </div>
-              </div>
-            </div>
-          </el-card>
-        </div>
+
+
+
       </div>
       <!--      文章简介-->
       <div style="margin-top: 20px;font-size: 24px">
@@ -96,20 +63,23 @@
         <el-divider></el-divider>
       </div>
       <div>
-
+<!--简介开始-->
         <div>
           <b style="margin-top: 20px;font-size: 24px">简介</b>
           <p>{{ BasicInformation.introduction }}</p>
-
         </div>
+<!--简介结束-->
         <el-divider></el-divider>
-        <div>
+<!--文章内容开始-->
+        <div style="width: 1200px;margin: 0 auto">
           <canvas ref="pdfCanvas" style="width: 100%; height: 100%;"></canvas>
         </div>
-
-        <div>
-          <button @click="previousPage" :disabled="currentPage === 1">上一页</button>
-          <button @click="nextPage" :disabled="currentPage === totalPages">下一页</button>
+<!--文章内容结束  -->
+        <div style="  display: flex;
+  justify-content: center;margin-top: 20px;font-size: 23px;">
+          <button @click="previousPage" :disabled="currentPage === 1" class="size"><i class="el-icon-d-arrow-left"></i></button>
+          <b style="margin: 10px 30px 0 30px;font-size: 26px">{{currentPage}}</b>
+          <button @click="nextPage" :disabled="currentPage === totalPages"class="size"><i class="el-icon-d-arrow-right"></i></button>
         </div>
       </div>
 
@@ -120,7 +90,7 @@
 </template>
 
 <script>
-import axios from "axios";
+
 import Footer from "@/common/Footer";
 import SecondHeader from "@/components/SecondHeader.vue";
 import Headers from "@/common/Headers";
@@ -132,7 +102,7 @@ export default {
   components: {Headers, SecondHeader, Footer},
 
   data() {
-    let id = location.search.split("=")[1];
+
     return {
       //详细介绍
 
@@ -148,7 +118,10 @@ export default {
       totalPages: 0,
       pdfDocument: null,
       pdfCanvas: null,
-      PdfUrl:''
+      PdfUrl:'',
+      pdfNumPages:'',
+      //用户id
+      UserId:''
     }
   },
 
@@ -158,6 +131,7 @@ export default {
           .promise.then(pdf => {
             this.pdfDocument = pdf;
             this.totalPages = pdf.numPages;
+
           });
     },
     renderPage() {
@@ -184,28 +158,58 @@ export default {
         this.renderPage();
       }
     },
-    nextPage() {
-      if (this.currentPage < this.totalPages) {
-        this.currentPage++;
-        this.renderPage();
-      }
-    },
-
-    //根据id跳转页面
-    read() {
+    //查验权限 是否有vip
+    PurchaseRestriction(){
+      this.UserId=localStorage.getItem("id");
       let id = location.search.split("=")[1];
-      let Url = 'http://localhost:8081/v1/bookDetailsPage/Article-content/' + id;
-      console.log('url=' + url)
+      let Url = 'http://localhost:8081/v1/bookDetailsPage/limit/'+3+'/'+id;
       this.axios
           .create({'headers': {'Authorization': localStorage.getItem('jwt')}})
           .get(Url).then((response) => {
-        this.$router.push('/ArticleContent');
+            let tradeStatus = response.data.data;
+            if (tradeStatus == 0){
+              this.read();
+            }else {
+
+              this.open();
+            }
       })
+    },
+    //弹框：没有购买此书会弹出此框
+    open() {
+      this.$confirm('购买此书以观看全部章节', '提示', {
+        confirmButtonText: '去购买',
+        cancelButtonText: '取消',
+        type: 'warning',
+        center: true
+      }).then(() => {
+        window.location.href = 'localhost:8081/alipay/pay?subject=香蕉&traceNo=213123131312312&totalAmount=6.99';
+      }).catch(() => {
+        this.$message({
+          type: 'info',
+          message: '已取消',
+        });
+      });},
+    //点击下一页的时候
+    nextPage() {
+      if (this.currentPage == 2){
+        this.PurchaseRestriction();
+      }else{
+        if (this.currentPage < this.totalPages){
+          this.currentPage++;
+          this.renderPage();
+        }
+      }
+    },
+    //根据id跳转页面
+    read() {
+      let id = location.search.split("=")[1];
+      this.$router.push({ name: '/ArticleContent', query: { id: id } });
+
     },
     //加入到书架
     add() {
       let Url = '';
-      console.log('url=' + url)
       this.axios
           .create({'headers': {'Authorization': localStorage.getItem('jwt')}})
           .get(Url).then((response) => {
@@ -220,56 +224,22 @@ export default {
       //起始 需要的信息
       //文章信息
       let id = location.search.split("=")[1];
-      let Url = 'http://localhost:8081/v1/bookDetailsPage/Basic-information/' + id;
+      let Url = 'http://localhost:8081/v1/bookDetailsPage/Basic-information/'+id;
       this.axios
           .create({'headers': {'Authorization': localStorage.getItem('jwt')}})
           .get(Url).then((response) => {
         this.BasicInformation = response.data.data
       })
 
-    },
-    //todo 加备注
-    parentUrl() {
-      let id = location.search.split("=")[1];
-      let Url = 'http://localhost:8081/v1/bookDetailsPage/Article-content/' + id;
-      this.axios
-          .create({'headers': {'Authorization': localStorage.getItem('jwt')}})
-          .get(Url).then((response) => {
-        this.PdfUrl = response.data.data
-      })
     }
   },
   mounted() {
-
-    // this.originate()
-    // this.parentUrl()
-    // pdfjsLib.GlobalWorkerOptions.workerSrc = PDFJSWorker;
-    //
-    // this.pdfCanvas = this.$refs.pdfCanvas;
-    // let id = location.search.split("=")[1];
-    // const url = 'http://192.168.64.1:9000/files/f9ae2cf9-b32d-4a0a-8647-5945ba3f356a-JAVA_WEB_03JAVASCRIPT.pdf';// 替换为你的 PDF 文件路径
-    // let Url = 'http://localhost:8081/v1/bookDetailsPage/Article-content/' + id;
-    //
-    // this.axios
-    //     .create({'headers': {'Authorization': localStorage.getItem('jwt')}})
-    //     .get(Url).then((response) => {
-    //
-    //   //this.url = response.data.data.pdfUrl.split("\\?")[0]
-    //
-    //
-    //
-    //   console.log('url=' + this.url)
-    // })
-    // this.loadPdf(url)
-    //     .then(() => this.renderPage())
-    //     .catch(error => {
-    //       console.error('加载 PDF 文件时出错：', error);
-    //     });
+    this.originate();
     pdfjsLib.GlobalWorkerOptions.workerSrc = '<path to pdf.worker.js>';
 
     this.pdfCanvas = this.$refs.pdfCanvas;
     let id = location.search.split("=")[1];
-    const Url = 'http://localhost:8081/v1/bookDetailsPage/Article-content/' + id;
+    const Url = 'http://localhost:8081/v1/bookDetailsPage/Article-content/'+id ;
 
     this.axios.create({
       headers: {
@@ -297,16 +267,14 @@ export default {
 
 <style>
 .center {
-  width: 1500px;
+  width: 1390px;
   margin: 0 auto;
   text-align: left; /* 让文本向左对齐 */
 }
-
-#pdfViewer {
-  width: 100%;
-  height: 1000px;
-  border: none;
+.size{
+  border: none
 }
+
 
 .el-icon-warning-outline {
   font-size: 14px;

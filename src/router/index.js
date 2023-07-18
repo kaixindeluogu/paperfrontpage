@@ -39,11 +39,15 @@ const routes = [
     path: '/',
     component: () => import(/* webpackChunkName: "about" */ '../views/HomeView.vue')
   },
-  {
-    path: '/readZz',
-    name: '/readZz',
-    component: () => import('../BookDetails/read-zz.vue')
-  },
+    {
+        path: '/readZz',
+        name: '/readZz',
+        component: () => import('../BookDetails/read-zz.vue')
+    }, {
+        path: '/ArticleContent',
+        name: '/ArticleContent',
+        component: () => import('../BookDetails/ArticleContent.vue')
+    },
     {
         path: '/SearchResult/:wd',
         component: () => import(/* webpackChunkName: "about" */ '../Search/SearchResult.vue')

@@ -105,21 +105,25 @@ export default {
           if (response.data.state == 20000){
             this.traceNo = response.data.data;
             console.log("------------"+this.traceNo)
+            window.open('http://localhost:8081/alipay/pay?subject='+this.BasicInformation.name+'&traceNo='+this.traceNo+'&totalAmount=7.99&userId='+3+'&bookId='+this.id)
           }
         })
-        //向后端发送请求 调取支付宝
-        let Url = 'http://localhost:8081/alipay/pay?subject='+this.BasicInformation.name+'&traceNo='+this.traceNo+'&totalAmount=7.99&userId='+3+'&bookId='+this.id;
-        this.axios
-            .create({'headers': {'Authorization': localStorage.getItem('jwt')}})
-            .get(Url).then((response) => {
 
-        })
-      }).catch(() => {
-        this.$message({
-          type: 'info',
-          message: '已取消'
-        });
-      });},
+
+        //向后端发送请求 调取支付宝
+        //let Url = 'http://localhost:8081/alipay/pay?subject='+this.BasicInformation.name+'&traceNo='+this.traceNo+'&totalAmount=7.99&userId='+3+'&bookId='+this.id;
+      //   this.axios
+      //       .create({'headers': {'Authorization': localStorage.getItem('jwt')}})
+      //       .get(Url).then((response) => {
+      //
+      //   })
+      // }).catch(() => {
+      //   this.$message({
+      //     type: 'info',
+      //     message: '已取消'
+      //   });
+      });
+      },
     //点击下一页的时候
     nextPage() {
       if (this.currentPage == 4){

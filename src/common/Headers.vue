@@ -14,7 +14,7 @@
                        style="background-color: rgba(255, 255, 255, 0.3);">
                 <el-menu-item index="0" style="color: black" @click="home">首页</el-menu-item>
                 <!--                分类-->
-                <el-submenu  index="1" style="color: black;">
+                <el-submenu index="1" style="color: black;">
                   <template slot="title">分类</template>
                   <!-- @click="sortPage(item.url)" -->
                   <el-menu-item v-for="item in tableForm"
@@ -29,10 +29,9 @@
                 <el-menu-item index="4" style="color: black" @click="open3">关于我们</el-menu-item>
               </el-menu>
             </el-col>
-            <el-col span="4">
-              <el-input
-                       style="margin-top: 40px;margin-left: 20px;border-radius: 10px; width: 200px;" placeholder="百日孤独">
-                <el-button slot="append" icon="el-icon-search" style="color:cornflowerblue;">搜索</el-button>
+            <el-col :span="4">
+              <el-input style="margin-top: 20px" v-model="wd" @keydown.native.enter="search()" placeholder="请输入搜索的关键字">
+                <el-button slot="append" @click="search()" icon="el-icon-search"></el-button>
               </el-input>
             </el-col>
             <el-col span="4">
@@ -53,23 +52,26 @@
 
               <div class="login-user1" v-else>
 
-                  <span class="welcome"><b>{{ currentUserName }}</b>&nbsp&nbsp&nbsp&nbsp&nbsp</span>
-                    <el-dropdown @command="handleCommand">
-                      <template>
+                <span class="welcome"><b>{{ currentUserName }}</b>&nbsp&nbsp&nbsp&nbsp&nbsp</span>
+                <el-dropdown @command="handleCommand">
+                  <template>
                     <el-avatar v-if="currentUserAvatar" size="medium" :src="currentUserAvatar"></el-avatar>
 
                     <el-avatar v-else
                                src="https://cube.elemecdn.com/0/88/03b0d39583f48206768a7534e55bcpng.png"
-                    style="width: 50px;height: 50px;"></el-avatar>
-                      </template>
+                               style="width: 50px;height: 50px;"></el-avatar>
+                  </template>
                   <el-dropdown-menu slot="dropdown">
 
-                    <el-dropdown-item icon="el-icon-user" command="openPersonalDialog" style="text-align: center">个人中心</el-dropdown-item>
+                    <el-dropdown-item icon="el-icon-user" command="openPersonalDialog" style="text-align: center">
+                      个人中心
+                    </el-dropdown-item>
                     <div style="height: 1px;background-color: #999999;margin: 1px 10px; /* 调整横线的位置 */"></div>
-                    <el-dropdown-item icon="el-icon-plus" command="openEditInfoDialog">修改资料</el-dropdown-item>
-                    <el-dropdown-item icon="el-icon-plus" command="openEditAvatarDialog">修改头像</el-dropdown-item>
-                    <el-dropdown-item icon="el-icon-plus" command="openEditPasswordDialog">修改密码</el-dropdown-item>
-                    <el-dropdown-item icon="el-icon-close" divided command="openLogoutConfirm">退出登录</el-dropdown-item>
+<!--                    <el-dropdown-item icon="el-icon-plus" command="openEditInfoDialog">修改资料</el-dropdown-item>-->
+<!--                    <el-dropdown-item icon="el-icon-plus" command="openEditAvatarDialog">修改头像</el-dropdown-item>-->
+<!--                    <el-dropdown-item icon="el-icon-plus" command="openEditPasswordDialog">修改密码</el-dropdown-item>-->
+                    <el-dropdown-item icon="el-icon-close" divided command="openLogoutConfirm">退出登录
+                    </el-dropdown-item>
                   </el-dropdown-menu>
 
                 </el-dropdown>
@@ -89,6 +91,8 @@ export default {
   name: "Headers",
   data() {
     return {
+      book:[],
+      wd:'',
       tableForm: [
         // {id: 1, name: "名著", url: "https://www.baidu.com"},
         // {id: 2, name: "小说", url: "https://www.baidu.com"}
@@ -99,6 +103,23 @@ export default {
   },
 
   methods: {
+    search() {
+      if (this.wd.trim() == "") {
+        this.$message.error("请输入搜索的内容!");
+        return;
+      }
+      // 构建搜索结果页面的路径
+      const searchResultPath = '/SearchResult/' + this.wd;
+
+      if (this.$route.path === searchResultPath) {
+        // 当前路由路径与搜索结果页面的路径相同，无需重新导航
+        return;
+      }
+
+      // 使用 $router.replace() 方法进行导航，并传递搜索内容作为参数
+      this.$router.replace(searchResultPath);
+    },
+
     //获取分类数据并实现点击跳转
     sortPage() {
       console.log(+localStorage.getItem('jwt'));
@@ -114,12 +135,22 @@ export default {
     handleCommand(command) {
       if (command == 'openEditInfoDialog') {
         this.openEditInfoDialog();
+      } else if (command == 'openPersonalDialog') {
+        this.openPersonalDialog();
       } else if (command == 'openEditAvatarDialog') {
         this.openEditAvatarDialog();
       } else if (command == 'openEditPasswordDialog') {
         this.openEditPasswordDialog();
       } else if (command == 'openLogoutConfirm') {
         this.openLogoutConfirm();
+      }
+    },
+
+    openPersonalDialog() {
+      console.log('准备弹出个人中心的页面');
+      const currentPath = this.$router.currentRoute.path;
+      if (currentPath !== '/personal/personalInformation') {
+        this.$router.replace({path: '/personal/personalInformation'});
       }
     },
     openEditInfoDialog() {
@@ -168,12 +199,48 @@ export default {
         type: 'success'
       });
     },
-    open2() {
+
+    open39() {
       this.$message({
         message: '即将进入 个人中心 页面',
         type: 'success'
       });
+      console.log('准备弹出修改当前用户资料的对话框');
+      const currentPath = this.$router.currentRoute.path;
+      const targetPath = '/personal/personalInformation';
+      if (currentPath !== targetPath) {
+        this.$router.replace({ path: targetPath });
+      }
     },
+    async open2() {
+      const currentPath = this.$router.currentRoute.path;
+      const targetPath = '/personal/personalInformation';
+      const jwt = localStorage.getItem("jwt");
+
+      if (!jwt) {
+        this.$message({
+          message: '请先登录',
+          type: 'warning'
+        });
+        this.$router.replace({ path: '/login' }); // 跳转登陆页面
+      } else if (currentPath === targetPath) {
+        this.$message({
+          message: '已经处于当前页面',
+          type: 'info'
+        });
+      } else {
+        await this.$message({
+          message: '即将进入个人中心页面',
+          type: 'success'
+        });
+
+        console.log('准备弹出修改当前用户资料的对话框');
+        if (currentPath !== targetPath) {
+          this.$router.replace({ path: targetPath });
+        }
+      }
+    }
+    ,
     open3() {
       this.$message({
         message: '即将进入 关于我们 页面',
@@ -214,6 +281,10 @@ export default {
 </script>
 
 <style scoped>
+.container {
+  width: 1500px;
+  margin: 0 auto;
+}
 /*登陆成功后头像显示设置*/
 .login-user1 {
   float: right;

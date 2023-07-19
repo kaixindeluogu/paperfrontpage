@@ -51,7 +51,7 @@
 <!--     图书详情 -->
       <BookDetails />
       <!--精品课程列表开始-->
-      <BoyChannel/>
+<!--      <BoyChannel/>-->
       <!--精品课程列表结束-->
     </el-main>
 

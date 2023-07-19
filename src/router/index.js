@@ -51,10 +51,10 @@ const routes = [
         name: '/ArticleContent',
         component: () => import('../BookDetails/ArticleContent.vue')
     },
-    {
-        path: '/SearchResult/:wd',
-        component: () => import(/* webpackChunkName: "about" */ '../Search/SearchResult.vue')
-    },
+  {
+    path: '/SearchResult/:wd',
+    component: () => import(/* webpackChunkName: "about" */ '../Search/SearchResult.vue')
+  },
     {
         path: '/personal',
         component: PersonalCenter2,

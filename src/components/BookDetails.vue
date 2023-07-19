@@ -27,15 +27,26 @@
 </template>
 
 <script>
+import axios from "axios";
+
 export default {
   data() {
     return {
-      book: [],
+            book: [],
     }
   },
   methods: {
     inBookDetails(id){
-      //todo 添加新页面的名称
+      this.axios
+          .create({'headers': {'Authorization': localStorage.getItem('jwt')}})
+          .post("http://localhost:8081/v1/adver/addBV/"+id)
+          .then(response => {
+        if (response.data.state == 20000) {
+          console.log("111111111111111111111111111111111111"+response.data);
+        }else {
+          console.log("增加失败")
+        }
+          })
       this.$router.push({ name: '/readZz', query: { id: id } });
     },
     fetchBookDetails() {

@@ -1,6 +1,7 @@
 <template>
   <!--9098-->
-  <div class="container">
+  <div class="
+">
     <el-container>
       <el-header id="el-header" height="80px">
         <div class="head-div">

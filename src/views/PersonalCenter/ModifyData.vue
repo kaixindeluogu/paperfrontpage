@@ -4,17 +4,15 @@
     <!-- 修改资料页面内容 -->
     <el-form :model="ruleForm" :rules="rules" ref="ruleForm" label-width="120px" class="demo-ruleForm">
       <el-row>
+        <br>
+        <br>
         <el-col :span="12">
           <el-form-item label="编辑昵称">
             <el-input style="width: 100%" placeholder="请输入新昵称" v-model="ruleForm.nickName"></el-input>
           </el-form-item>
-        </el-col>
-        <el-col :span="12">
           <el-form-item label="编辑手机号">
             <el-input style="width: 100%" placeholder="请输入新手机号" v-model="ruleForm.phoneNumber"></el-input>
           </el-form-item>
-        </el-col>
-        <el-col :span="12">
           <el-form-item label="修改性别">
             <el-select style="width: 100%" placeholder="请选择性别" v-model="ruleForm.gender">
               <el-option label="男" value="男"></el-option>

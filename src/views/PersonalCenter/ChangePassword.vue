@@ -1,31 +1,27 @@
 <!--修改密码-->
 <template>
   <div>
-    <el-form :model="ruleForm" :rules="rules" ref="ruleForm" label-width="120px">
+    <el-form :model="ruleForm" :rules="rules" ref="ruleForm" label-width="120px" class="demo-ruleForm">
       <el-row>
+        <br>
+        <br>
         <el-col :span="12">
           <el-form-item label="原密码" >
-            <el-input style="width: 100%" placeholder="请输入原密码" v-model="ruleForm.passwordJ" show-password></el-input>
+            <el-input placeholder="请输入原密码" v-model="ruleForm.passwordJ" show-password></el-input>
         </el-form-item>
-        </el-col>
-        <el-col :span="12">
           <el-form-item label="新密码" >
-            <el-input style="width: 100%" placeholder="请输入新密码" v-model="ruleForm.password" show-password></el-input>
+            <el-input  placeholder="请输入新密码" v-model="ruleForm.password" show-password></el-input>
           </el-form-item>
-        </el-col>
-        <el-col :span="12">
           <el-form-item label="问题" >
-          <el-select style="width: 100%"  placeholder="请选择密保问题" v-model="ruleForm.question" >
+          <el-select   placeholder="请选择密保问题" v-model="ruleForm.question" >
             <el-option label="您的身份证号码?" value="您的身份证号码?"></el-option>
             <el-option label="您的父亲的名字?" value="您的父亲的名字?"></el-option>
             <el-option label="您的难忘的事情?" value="您的难忘的事情?"></el-option>
             <!-- 添加更多选项 -->
           </el-select>
           </el-form-item>
-        </el-col>
-        <el-col :span="12">
           <el-form-item label="答案">
-            <el-input style="width: 100%" placeholder="请输入密保答案" v-model="ruleForm.answer" show-password></el-input>
+            <el-input  placeholder="请输入密保答案" v-model="ruleForm.answer" show-password></el-input>
           </el-form-item>
         </el-col>
       </el-row>

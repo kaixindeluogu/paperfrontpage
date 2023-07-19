@@ -12,6 +12,8 @@
           default-active="2"
           class="el-menu-vertical-demo custom-menu"
           background-color="burlywood">
+        <br>
+        <br>
 
         <el-menu-item index="/personal/personalInformation">
           <i class="el-icon-menu"></i>

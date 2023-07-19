@@ -21,7 +21,7 @@
           <div style="height: 35px">
             <div style="font-size: 25px;">
               <!--              书名-->
-              <span style="color: #222;">{{ BasicInformation.name }}</span>
+              <span style="color: #222;font-family: 'Open Sans', Sans-serif">{{ BasicInformation.name }}</span>
             </div>
           </div>
           <!--第一行结束-->
@@ -48,7 +48,7 @@
           <div style="margin-top: 15px">
             <el-button type="warning" round style="margin-right: 17px; color: #222" @click="read()"><b>开始阅读</b>
             </el-button>
-            <el-button round @click="add()">加入书架</el-button>
+            <el-button round @click="add()">{{bookshelf}}</el-button>
             <a @click="report()"><i class="el-icon-warning-outline">举报</i></a>
           </div>
 
@@ -107,7 +107,7 @@ export default {
 
     return {
       //详细介绍
-
+      bookshelf:'',
       comment: {content: ""},
       //书名 作者 借阅数量 详细资料 出版社 封面 出版时间 子标签分类
       BasicInformation: [],
@@ -122,6 +122,7 @@ export default {
       //bookId
       id:'',
       traceNo:'',
+      sum:{userId:'',bookId:''}
     }
   },
 
@@ -134,6 +135,7 @@ export default {
 
           });
     },
+    //渲染pdf页面
     renderPage() {
       this.pdfDocument.getPage(this.currentPage)
           .then(page => {
@@ -194,20 +196,41 @@ export default {
       this.$router.push({ name: '/ArticleContent', query: { id: this.id } });
 
     },
-    //加入到书架
-    add() {
-      let sum = {userId:this.UserId,bookId:this.bookId}
-      let Url = 'http://localhost:8081/v1/favorites/addbook';
+    //添加到书架
+    ViewCollection(){
+      let Url = 'http://localhost:8081/v1/favorites/selectbook';
       this.axios
           .create({'headers': {'Authorization': localStorage.getItem('jwt')}})
-          .post(Url,sum).then((response) => {
-          if (response.data.state==20000){
-            this.$message({
-              type: 'info',
-              message: '已添加',
-            })
+          .post(Url,this.sum).then((response) => {
+        console.log("===========++++++++++++"+response.data.state)
+        console.log("===========++++++++++++"+response.data.data)
+        if (response.data.state==20000){
+          if (response.data.data == 0){
+            this.bookshelf='添加书架';
           }
+        }else {
+          this.bookshelf='已添加';
+        }
       })
+    },
+    //加入到书架
+    add() {
+      if (this.bookshelf == '添加书架'){
+
+        let Url = 'http://localhost:8081/v1/favorites/addbook';
+        this.axios
+            .create({'headers': {'Authorization': localStorage.getItem('jwt')}})
+            .post(Url,this.sum).then((response) => {
+          console.log("===========sssssssssssssss"+response.data.state)
+          if (response.data.state==20000){
+            this.bookshelf='已添加';
+            this.$message({
+              type: 'success',
+              message: '添加成功'})
+          }
+        })
+      }
+
     },
     //点击举报的时候把书籍id也传进去
     report() {
@@ -216,7 +239,6 @@ export default {
     originate() {
       //起始 需要的信息
       //文章信息
-
       let Url = 'http://localhost:8081/v1/bookDetailsPage/Basic-information/'+this.id;
       this.axios
           .create({'headers': {'Authorization': localStorage.getItem('jwt')}})
@@ -227,17 +249,25 @@ export default {
     }
   },
   mounted() {
+
     //获取url上的bookId
     this.id = location.search.split("=")[1];
     //查阅 用户id
     this.UserId=localStorage.getItem("id");
+    //查询书架信息和修改书架信息所需要的返回参数
+    this.sum.userId = this.UserId;
+    this.sum.bookId = this.id;
+    //添加到书架
+    this.ViewCollection();
+    //文章基本信息
     this.originate();
+    //设置 PDF.js 库中的全局工作器
     pdfjsLib.GlobalWorkerOptions.workerSrc = '<path to pdf.worker.js>';
-
+    //
     this.pdfCanvas = this.$refs.pdfCanvas;
-    let id = location.search.split("=")[1];
-    const Url = 'http://localhost:8081/v1/bookDetailsPage/Article-content/'+id ;
 
+    //获取pdf文件并交给pdf组件
+    const Url = 'http://localhost:8081/v1/bookDetailsPage/Article-content/'+this.id ;
     this.axios.create({
       headers: {
         Authorization: localStorage.getItem('jwt')

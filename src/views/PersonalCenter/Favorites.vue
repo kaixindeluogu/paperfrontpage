@@ -1,7 +1,9 @@
 <!--收藏夹-->
 <template>
 <div>
-  <p>fghfhjfhjgfhjg</p>
+  <br>
+  <br>
+  <el-empty description="正在开发中..."></el-empty>
 </div>
 </template>
 

@@ -66,9 +66,9 @@
                       个人中心
                     </el-dropdown-item>
                     <div style="height: 1px;background-color: #999999;margin: 1px 10px; /* 调整横线的位置 */"></div>
-                    <el-dropdown-item icon="el-icon-plus" command="openEditInfoDialog">修改资料</el-dropdown-item>
-                    <el-dropdown-item icon="el-icon-plus" command="openEditAvatarDialog">修改头像</el-dropdown-item>
-                    <el-dropdown-item icon="el-icon-plus" command="openEditPasswordDialog">修改密码</el-dropdown-item>
+<!--                    <el-dropdown-item icon="el-icon-plus" command="openEditInfoDialog">修改资料</el-dropdown-item>-->
+<!--                    <el-dropdown-item icon="el-icon-plus" command="openEditAvatarDialog">修改头像</el-dropdown-item>-->
+<!--                    <el-dropdown-item icon="el-icon-plus" command="openEditPasswordDialog">修改密码</el-dropdown-item>-->
                     <el-dropdown-item icon="el-icon-close" divided command="openLogoutConfirm">退出登录
                     </el-dropdown-item>
                   </el-dropdown-menu>
@@ -134,12 +134,22 @@ export default {
     handleCommand(command) {
       if (command == 'openEditInfoDialog') {
         this.openEditInfoDialog();
+      } else if (command == 'openPersonalDialog') {
+        this.openPersonalDialog();
       } else if (command == 'openEditAvatarDialog') {
         this.openEditAvatarDialog();
       } else if (command == 'openEditPasswordDialog') {
         this.openEditPasswordDialog();
       } else if (command == 'openLogoutConfirm') {
         this.openLogoutConfirm();
+      }
+    },
+
+    openPersonalDialog() {
+      console.log('准备弹出个人中心的页面');
+      const currentPath = this.$router.currentRoute.path;
+      if (currentPath !== '/personal/personalInformation') {
+        this.$router.replace({path: '/personal/personalInformation'});
       }
     },
     openEditInfoDialog() {
@@ -188,13 +198,48 @@ export default {
         type: 'success'
       });
     },
-    open2() {
-      this.$router.push({ name: '/personal', query: { id: id } });
-      // this.$message({
-      //   message: '即将进入 个人中心 页面',
-      //   type: 'success'
-      // });
+
+    open39() {
+      this.$message({
+        message: '即将进入 个人中心 页面',
+        type: 'success'
+      });
+      console.log('准备弹出修改当前用户资料的对话框');
+      const currentPath = this.$router.currentRoute.path;
+      const targetPath = '/personal/personalInformation';
+      if (currentPath !== targetPath) {
+        this.$router.replace({ path: targetPath });
+      }
     },
+    async open2() {
+      const currentPath = this.$router.currentRoute.path;
+      const targetPath = '/personal/personalInformation';
+      const jwt = localStorage.getItem("jwt");
+
+      if (!jwt) {
+        this.$message({
+          message: '请先登录',
+          type: 'warning'
+        });
+        this.$router.replace({ path: '/login' }); // 跳转登陆页面
+      } else if (currentPath === targetPath) {
+        this.$message({
+          message: '已经处于当前页面',
+          type: 'info'
+        });
+      } else {
+        await this.$message({
+          message: '即将进入个人中心页面',
+          type: 'success'
+        });
+
+        console.log('准备弹出修改当前用户资料的对话框');
+        if (currentPath !== targetPath) {
+          this.$router.replace({ path: targetPath });
+        }
+      }
+    }
+    ,
     open3() {
       this.$message({
         message: '即将进入 关于我们 页面',

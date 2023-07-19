@@ -63,7 +63,8 @@ export default {
             let jsonResult = response.data;
             if (response.data.state === 20000) {
               this.$message.success("修改成功!");
-              location.reload();
+              localStorage.removeItem("jwt")
+              this.$router.replace({ path: '/' }); // 跳转回首页
             } else {
               this.$message.error(jsonResult);
             }

@@ -58,6 +58,7 @@ const routes = [
     {
         path: '/personal',
         component: PersonalCenter2,
+        redirect: '/personal/personalInformation',//重定向
         children: [
             //个人信息
             {

@@ -4,30 +4,47 @@
     <SecondHeader/>
     <br>
     <br>
-    {{$route.params.wd}}
-    <div class="book-list">
-      <div v-for="item in book" class="book-item">
-        <el-table-column label="封面">
-          <div class="book-frame">
-            <div class="book-details">
-              <div class="book-cover">
-                <div class="book-cover-inner">
-                  <img :src="item.cover" @click="inBookDetails(item.id)">
-                </div>
-              </div>
-              <div class="book-info">
-                <div class="book-description-top">
-                  <p class="book-name"  @click="inBookDetails(item.id)">&nbsp{{item.name}}</p>
-                  <p class="book-author">{{item.author}}
-                    <i >{{item.publishTime}}出版</i></p>
-                </div>
-                <p class="book-introduction ellipsis">{{item.publisher}}</p>
+    <ul class="infinite-list" v-infinite-scroll="load" style="overflow:auto">
+    <div id="sssss">
+      <div class="book-list">
+        <div v-if="book.length === 0" class="empty-message">
+          <div v-if="book.length === 0" class="empty-message">
+            <div class="empty-container">
+              <el-empty description="空空如也，什么也没找到"></el-empty>
+            </div>
+          </div>
+        </div>
+        <div v-else>
+          <div class="book-item">
+            <div class="book-list">
+              <div v-for="item in book" class="book-item">
+                <el-table-column label="封面">
+                  <div class="book-frame">
+                    <div class="book-details">
+                      <div class="book-cover">
+                        <div class="book-cover-inner">
+                          <img :src="item.cover" @click="inBookDetails(item.id)">
+                        </div>
+                      </div>
+                      <div class="book-info">
+                        <div class="book-description-top">
+                          <p class="book-name"  @click="inBookDetails(item.id)">&nbsp 书名 :{{item.name}}</p>
+                          <p class="book-author">作者 :{{item.author}}
+                            <br>
+                            <i >出版社 :{{item.publisher}}</i></p>
+                        </div>
+                        <p class="book-introduction ellipsis">出版日期 :{{item.publishTime}}</p>
+                      </div>
+                    </div>
+                  </div>
+                </el-table-column>
               </div>
             </div>
           </div>
-        </el-table-column>
+        </div>
       </div>
     </div>
+    </ul>
     <Footer/>
   </div>
 </template>
@@ -54,18 +71,18 @@ export default {
     };
   },
   methods: {
+    load () {
+      this.count += 2
+    },
     getSearchResults(keyword) {
       // 发起搜索请求，并更新搜索结果
       this.search();
     },
     search() {
       let url = 'http://localhost:8081/v1/search/'+this.$route.params.wd;
-      let params = {
-        wd: this.$route.params.wd
-      };
       this.axios
           .create({ 'headers': { 'Authorization': localStorage.getItem('jwt') } })
-          .get(url, { params: params }) // 将参数作为配置对象的params属性传递给get方法
+          .get(url) // 将参数作为配置对象的params属性传递给get方法
           .then(response => {
             if (response.data.state == 20000) {
               this.book = response.data.data;
@@ -74,6 +91,9 @@ export default {
               this.book.author = response.data.author;
               this.book.publishTime = response.data.publishTime;
               this.book.publisher = response.data.publisher;
+            }else {
+              this.book = {}; // 设置为空对象或其他默认值
+
             }
             window.abc = this.book.name;
           });

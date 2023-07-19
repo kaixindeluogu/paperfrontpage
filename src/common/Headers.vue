@@ -189,10 +189,11 @@ export default {
       });
     },
     open2() {
-      this.$message({
-        message: '即将进入 个人中心 页面',
-        type: 'success'
-      });
+      this.$router.push({ name: '/personal', query: { id: id } });
+      // this.$message({
+      //   message: '即将进入 个人中心 页面',
+      //   type: 'success'
+      // });
     },
     open3() {
       this.$message({

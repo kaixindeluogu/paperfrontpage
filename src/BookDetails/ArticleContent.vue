@@ -110,7 +110,18 @@ export default {
       //       .get(Url).then((response) => {
       //
       //   })
-
+    Owning(){
+      //查阅是否拥有此书
+      let Url = 'http://localhost:8081/v1/BookOrderse/limit/'+3+'/'+this.id;
+      this.axios
+          .create({'headers': {'Authorization': localStorage.getItem('jwt')}})
+          .get(Url).then((response) => {
+        this.tradeStatus = response.data.data;
+        if (this.tradeStatus == 0){
+          this.open();
+        }
+      })
+    },
 
 
     //点击下一页的时候
@@ -119,19 +130,19 @@ export default {
       if (this.currentPage < this.totalPages) {
 
         if(this.currentPage == 4){
-          if (this.currentPage != 4){
-            this.currentPage =4
-          }
-          //查阅是否拥有此书
-            let Url = 'http://localhost:8081/v1/bookDetailsPage/limit/'+this.UserId+'/'+this.id;
-            this.axios
-                .create({'headers': {'Authorization': localStorage.getItem('jwt')}})
-                .get(Url).then((response) => {
-              this.tradeStatus = response.data.data;
-              if (this.tradeStatus == 0){
-                this.open();
-              }
-            })
+          //查阅是否拥有买过书（新用户）
+          let Url = 'http://localhost:8081/v1/BookOrderse/limitNumber/'+3;
+          this.axios
+              .create({'headers': {'Authorization': localStorage.getItem('jwt')}})
+              .get(Url).then((response) => {
+           let number = response.data.data;
+            if (number != 0){
+              this.open();
+            }else {
+              //打开转盘
+            }
+          })
+
         }
         if (this.tradeStatus != 0 ||this.currentPage<4){
           this.currentPage++;

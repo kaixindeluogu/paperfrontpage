@@ -39,7 +39,9 @@ export default {
       //bookId
       id:'',
       //唯一编码
-      traceNo:''
+      traceNo:'',
+      executeNext:'',
+      tradeStatus:'0'
     };
   },
 
@@ -77,18 +79,6 @@ export default {
         this.renderPage();
       }
     },
-    //查验权限 查阅该用户是否拥有此书
-    PurchaseRestriction(){
-      let Url = 'http://localhost:8081/v1/bookDetailsPage/limit/'+3+'/'+this.id;
-      this.axios
-          .create({'headers': {'Authorization': localStorage.getItem('jwt')}})
-          .get(Url).then((response) => {
-        let tradeStatus = response.data.data;
-        if (tradeStatus == 0){
-          this.open();
-        }
-      })
-    },
     //弹框：没有购买此书会弹出此框
     open() {
       this.$confirm('购买此书以观看全部章节', '提示', {
@@ -106,7 +96,7 @@ export default {
             this.traceNo = response.data.data;
             console.log("------------"+this.traceNo)
             //打开支付页面
-            window.open('http://localhost:8081/alipay/pay?subject='+this.BasicInformation.name+'&traceNo='+this.traceNo+'&totalAmount=7.99&userId='+3+'&bookId='+this.id)
+            window.open('http://localhost:8081/alipay/pay?subject='+this.BasicInformation.name+'&traceNo='+this.traceNo+'&totalAmount=7.99&userId='+this.UserId+'&bookId='+this.id)
           }
         })
       }).catch(() => {
@@ -120,21 +110,45 @@ export default {
       //       .get(Url).then((response) => {
       //
       //   })
-
+    Owning(){
+      //查阅是否拥有此书
+      let Url = 'http://localhost:8081/v1/BookOrderse/limit/'+3+'/'+this.id;
+      this.axios
+          .create({'headers': {'Authorization': localStorage.getItem('jwt')}})
+          .get(Url).then((response) => {
+        this.tradeStatus = response.data.data;
+        if (this.tradeStatus == 0){
+          this.open();
+        }
+      })
+    },
 
 
     //点击下一页的时候
     nextPage() {
-      let executeNext = true; // 标志变量，初始值为 true
+       // 标志变量，初始值为 true
+      if (this.currentPage < this.totalPages) {
 
-      if (this.currentPage == 4) {
-        this.PurchaseRestriction();
-        executeNext = false; // 执行了 this.PurchaseRestriction() 后，将标志变量置为 false
-      }
+        if(this.currentPage == 4){
+          //查阅是否拥有买过书（新用户）
+          let Url = 'http://localhost:8081/v1/BookOrderse/limitNumber/'+3;
+          this.axios
+              .create({'headers': {'Authorization': localStorage.getItem('jwt')}})
+              .get(Url).then((response) => {
+           let number = response.data.data;
+            if (number != 0){
+              this.open();
+            }else {
+              //打开转盘
+            }
+          })
 
-      if (executeNext && this.currentPage < this.totalPages) {
-        this.currentPage++;
+        }
+        if (this.tradeStatus != 0 ||this.currentPage<4){
+          this.currentPage++;
+        }
         this.renderPage();
+
         // 更新当前页码，并存储到 SessionStorage 中
         sessionStorage.setItem('currentPage', this.currentPage.toString());
       }

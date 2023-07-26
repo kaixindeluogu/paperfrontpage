@@ -111,7 +111,18 @@ export default {
           })
     },
     GOBookDetails(id){
-      //todo 添加新页面的名称
+      this.axios
+          .create({'headers': {'Authorization': localStorage.getItem('jwt')}})
+          .post("http://localhost:8081/v1/adver/addBV/"+id)
+          .then(response => {
+            if (response.data.state == 20000) {
+              console.log(response.data);
+            }else {
+              console.log("增加失败")
+            }
+          }).catch(error => {
+        console.log("请求发送失败", error);
+      });
       this.$router.push({ name: '/readZz', query: { id: id } });
     },
     handleClick() {

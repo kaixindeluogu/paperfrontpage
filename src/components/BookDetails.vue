@@ -42,11 +42,13 @@ export default {
           .post("http://localhost:8081/v1/adver/addBV/"+id)
           .then(response => {
         if (response.data.state == 20000) {
-          console.log("111111111111111111111111111111111111"+response.data);
+          console.log(response.data);
         }else {
           console.log("增加失败")
         }
-          })
+          }).catch(error => {
+        console.log("请求发送失败", error);
+      });
       this.$router.push({ name: '/readZz', query: { id: id } });
     },
     fetchBookDetails() {
